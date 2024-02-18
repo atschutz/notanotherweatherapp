@@ -2,8 +2,9 @@ package com.example.notanotherweatherapp.model
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
 
-class ForecastWebService {
+class ForecastWebService @Inject constructor() {
     private var api: ForecastApi
 
     init {

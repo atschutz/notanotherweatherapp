@@ -7,11 +7,11 @@ import retrofit2.http.Url
 
 interface ForecastApi {
     @GET("points/{latitude},{longitude}")
-    fun getForecastResponse(
+    suspend fun getForecastResponse(
         @Path("latitude") latitude: Double,
         @Path("longitude") longitude: Double
     ): Response<ForecastResponse>
 
     @GET
-    fun getHourlyResponse(@Url url: String?): Response<HourlyResponse>
+    suspend fun getHourlyResponse(@Url url: String?): Response<HourlyResponse>
 }
