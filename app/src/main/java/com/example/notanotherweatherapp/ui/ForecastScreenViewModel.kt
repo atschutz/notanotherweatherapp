@@ -18,13 +18,9 @@ class ForecastScreenViewModel @Inject constructor(
 ) : ViewModel() {
     var periods: List<Period> by mutableStateOf(listOf())
 
-    init {
-        getPeriods(39.7456, -97.0892)
-    }
-
     fun getPeriods(latitude: Double, longitude: Double) {
         viewModelScope.launch(Dispatchers.IO) {
-            periods = repository.getHourlyPeriods(latitude, longitude)
+            periods = repository.getHourlyPeriods(latitude, longitude).take(13)
         }
     }
 }

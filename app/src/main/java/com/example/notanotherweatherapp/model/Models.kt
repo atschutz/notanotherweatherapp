@@ -28,6 +28,7 @@ data class Period(
     val relativeHumidity: RelativeHumidity?,
     val windSpeed: String?,
     val windDirection: String?,
+    val icon: String?,
     val shortForecast: String?,
 )
 
