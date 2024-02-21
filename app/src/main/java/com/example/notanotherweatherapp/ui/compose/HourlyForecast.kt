@@ -3,8 +3,6 @@ package com.example.notanotherweatherapp.ui.compose
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,7 +24,7 @@ import com.example.notanotherweatherapp.TEST_PERIOD
 import com.example.notanotherweatherapp.model.Period
 
 @Composable
-fun HourlyForecast(period: Period, modifier: Modifier) {
+fun HourlyForecast(period: Period?, modifier: Modifier) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -38,20 +36,28 @@ fun HourlyForecast(period: Period, modifier: Modifier) {
                 color = Color.LightGray,
                 shape = RoundedCornerShape(topStart = 100.dp, bottomStart = 100.dp)
             )
-            .padding(4.dp)
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxHeight()
-        ) {
+        Row {
             Image(
                 painter = painterResource(id = R.drawable.ic_sunny),
                 contentDescription = "Weather icon",
                 contentScale = ContentScale.FillHeight,
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .padding(4.dp)
+            )
+            val probPrecip = period?.probabilityOfPrecipitation?.value?.toInt()
+            Text(
+                text =
+                    if (probPrecip == null || probPrecip <= 0) ""
+                    else "$probPrecip%",
+                style = MaterialTheme.typography.labelSmall,
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
             )
         }
         Text(
-            text = "${period.temperature}°",
+            text = "${period?.temperature ?: ""}°",
             style = MaterialTheme.typography.labelLarge
         )
     }

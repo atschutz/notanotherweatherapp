@@ -13,7 +13,7 @@ import com.example.notanotherweatherapp.TEST_PERIOD
 import com.example.notanotherweatherapp.model.Period
 
 @Composable
-fun ForecastInfoBox(period: Period, modifier: Modifier) {
+fun ForecastInfoBox(period: Period?, modifier: Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()

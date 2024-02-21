@@ -26,7 +26,7 @@ import com.example.notanotherweatherapp.TEST_PERIOD
 import com.example.notanotherweatherapp.model.Period
 
 @Composable
-fun CurrentForecast(period: Period) {
+fun CurrentForecast(period: Period?, locationString: String) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -48,11 +48,15 @@ fun CurrentForecast(period: Period) {
 
         ) {
             Text(
-                text = "${period.temperature}°",
+                text = locationString,
+                style = MaterialTheme.typography.titleSmall,
+            )
+            Text(
+                text = "${period?.temperature ?: ""}°",
                 style = MaterialTheme.typography.titleLarge
             )
             Text(
-                text = "${period.shortForecast}",
+                text = period?.shortForecast ?: "",
                 style = MaterialTheme.typography.titleSmall,
             )
         }
@@ -72,5 +76,5 @@ fun CurrentForecast(period: Period) {
 @Preview(showBackground = true)
 @Composable
 fun CurrentForecastPreview() {
-    CurrentForecast(period = TEST_PERIOD)
+    CurrentForecast(period = TEST_PERIOD, "New York, NY")
 }

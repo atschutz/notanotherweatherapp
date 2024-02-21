@@ -5,8 +5,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Looper
-import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -14,14 +12,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.PointerIcon.Companion.Text
 import androidx.core.content.ContextCompat
 import com.example.notanotherweatherapp.ui.compose.ForecastScreen
 import com.example.notanotherweatherapp.ui.theme.NotAnotherWeatherAppTheme
@@ -45,13 +41,6 @@ class MainActivity : ComponentActivity() {
     private lateinit var locationCallback: LocationCallback
     private var locationRequired: Boolean = false
 
-    override fun onResume() {
-        super.onResume()
-        if (locationRequired) {
-            startLocationUpdates()
-        }
-    }
-
     override fun onPause() {
         super.onPause()
         fusedLocationClient.removeLocationUpdates(locationCallback)
@@ -64,7 +53,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             var currentLocation by remember {
-                mutableStateOf(LatLng(0.0, 0.0))
+                mutableStateOf<LatLng?>(null)
             }
 
             locationCallback = object: LocationCallback() {
@@ -93,9 +82,6 @@ class MainActivity : ComponentActivity() {
         val locationRequest = LocationRequest.Builder(
             Priority.PRIORITY_HIGH_ACCURACY, 100
         )
-            .setWaitForAccurateLocation(false)
-            .setMinUpdateIntervalMillis(3000)
-            .setMaxUpdateDelayMillis(100)
             .build()
 
         fusedLocationClient.requestLocationUpdates(
@@ -103,10 +89,11 @@ class MainActivity : ComponentActivity() {
             locationCallback,
             Looper.getMainLooper()
         )
+
     }
 
     @Composable
-    fun LocationWrapper(currentLocation: LatLng, context: Context) {
+    fun LocationWrapper(currentLocation: LatLng?, context: Context) {
         val launcherMultiplePermissions = rememberLauncherForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
         ) { map ->
@@ -118,14 +105,10 @@ class MainActivity : ComponentActivity() {
         }
 
         if (permissions.all {
-                ContextCompat.checkSelfPermission(context, it) ==
-                        PackageManager.PERMISSION_GRANTED
-            }) {
-            startLocationUpdates()
-        } else {
-            launcherMultiplePermissions.launch(permissions)
-        }
+            ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
+        }) startLocationUpdates()
+        else launcherMultiplePermissions.launch(permissions)
 
-        ForecastScreen(currentLocation)
+        ForecastScreen(currentLocation = currentLocation)
     }
 }
