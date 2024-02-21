@@ -64,13 +64,13 @@ fun ForecastScreen(currentLocation: LatLng?) {
             ) {
                 ForecastInfoBox(
                     period = viewModel.periods.firstOrNull(),
-                    modifier = Modifier.weight(0.7F),
+                    modifier = Modifier.weight(0.65F),
                 )
                 Column(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier
                         .fillMaxSize()
-                        .weight(0.3F)
+                        .weight(0.35F)
                 ) {
                     viewModel.periods.forEachIndexed { index, period ->
                         if (index != 0) HourlyForecast(period = period, Modifier.weight(1F))

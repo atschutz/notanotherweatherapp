@@ -45,13 +45,22 @@ val Typography = Typography(
             includeFontPadding = false
         ),
     ),
-    labelSmall = TextStyle(
+    labelMedium = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 16.sp,
+        fontSize = 14.sp,
+        lineHeight = 14.sp,
         platformStyle = PlatformTextStyle(
             includeFontPadding = false
         ),
-    )
+    ),
+    labelSmall = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp,
+        lineHeight = 12.sp,
+        platformStyle = PlatformTextStyle(
+            includeFontPadding = false
+        ),
+)
 )

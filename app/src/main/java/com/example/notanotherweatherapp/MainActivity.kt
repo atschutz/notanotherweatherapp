@@ -81,15 +81,13 @@ class MainActivity : ComponentActivity() {
     private fun startLocationUpdates() {
         val locationRequest = LocationRequest.Builder(
             Priority.PRIORITY_HIGH_ACCURACY, 100
-        )
-            .build()
+        ).build()
 
         fusedLocationClient.requestLocationUpdates(
             locationRequest,
             locationCallback,
             Looper.getMainLooper()
         )
-
     }
 
     @Composable
