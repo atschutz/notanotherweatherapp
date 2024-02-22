@@ -33,15 +33,15 @@ import com.example.notanotherweatherapp.getTimeFromDateString
 import com.example.notanotherweatherapp.model.Period
 
 @Composable
-fun HourlyForecast(period: Period?, modifier: Modifier) {
+fun HourlyForecast(period: Period?, modifier: Modifier = Modifier) {
     Card(
         shape = RoundedCornerShape(topStart = 100.dp, bottomStart = 100.dp),
         colors = CardDefaults.cardColors(containerColor = Color.LightGray),
         elevation = CardDefaults.cardElevation(4.dp),
         modifier = modifier
-            .height(50.dp)
+            .height(48.dp)
             .fillMaxWidth()
-            .padding(start = 8.dp)
+            .padding(start = 8.dp, top = 8.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

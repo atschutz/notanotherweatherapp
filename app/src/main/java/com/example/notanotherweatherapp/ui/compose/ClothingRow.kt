@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.example.notanotherweatherapp.R
 
 @Composable
-fun ClothingRow(clothingMap: Map<String, Int>, modifier: Modifier) {
+fun ClothingRow(clothingMap: Map<String, Int>, modifier: Modifier = Modifier) {
     Card(
         shape = RectangleShape,
         colors = CardDefaults.cardColors(containerColor = Color.LightGray),
@@ -58,6 +58,12 @@ fun ClothingRow(clothingMap: Map<String, Int>, modifier: Modifier) {
             }
         }
     }
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(1.dp)
+            .background(Color.Gray)
+    )
 }
 
 @Preview(showBackground = true)

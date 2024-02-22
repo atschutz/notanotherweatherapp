@@ -14,7 +14,7 @@ import com.example.notanotherweatherapp.TEST_PERIOD
 import com.example.notanotherweatherapp.model.Period
 
 @Composable
-fun ForecastInfoBox(period: Period?, modifier: Modifier) {
+fun ForecastInfoBox(period: Period?, modifier: Modifier = Modifier) {
     Card(
         shape = RoundedCornerShape(topEnd = 24.dp, bottomEnd = 24.dp),
         colors = CardDefaults.cardColors(containerColor = Color.LightGray),

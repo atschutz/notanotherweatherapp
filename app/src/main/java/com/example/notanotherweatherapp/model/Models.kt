@@ -1,18 +1,19 @@
 package com.example.notanotherweatherapp.model
 
+data class LocationResponse(
+    val properties: LocationProperties
+)
+
+data class LocationProperties(
+    val forecast: String?,
+    val forecastHourly: String?,
+)
+
 data class ForecastResponse(
     val properties: ForecastProperties
 )
 
 data class ForecastProperties(
-    val forecastHourly: String?
-)
-
-data class HourlyResponse(
-    val properties: HourlyProperties
-)
-
-data class HourlyProperties(
     val periods: List<Period>
 )
 

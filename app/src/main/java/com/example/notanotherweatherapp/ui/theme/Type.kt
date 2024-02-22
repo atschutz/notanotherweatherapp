@@ -21,6 +21,7 @@ val Typography = Typography(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
         fontSize = 100.sp,
+        lineHeight = 20.sp,
         letterSpacing = 0.sp,
         platformStyle = PlatformTextStyle(
             includeFontPadding = false
@@ -62,5 +63,23 @@ val Typography = Typography(
         platformStyle = PlatformTextStyle(
             includeFontPadding = false
         ),
-)
+    ),
+    bodyMedium = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp,
+        lineHeight = 12.sp,
+        platformStyle = PlatformTextStyle(
+            includeFontPadding = false
+        ),
+    ),
+    bodySmall = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Normal,
+        fontSize = 10.sp,
+        lineHeight = 10.sp,
+        platformStyle = PlatformTextStyle(
+            includeFontPadding = false
+        ),
+    ),
 )

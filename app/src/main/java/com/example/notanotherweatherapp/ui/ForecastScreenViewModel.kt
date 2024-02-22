@@ -2,7 +2,6 @@ package com.example.notanotherweatherapp.ui
 
 import android.content.Context
 import android.location.Geocoder
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -21,13 +20,21 @@ import javax.inject.Inject
 class ForecastScreenViewModel @Inject constructor(
     private val repository: ForecastRepository
 ) : ViewModel() {
-    var periods: List<Period> by mutableStateOf(listOf())
+    var hourlyPeriods: List<Period> by mutableStateOf(listOf())
+    var dailyPeriods: List<Period> by mutableStateOf(listOf())
     var cityString by mutableStateOf("")
 
     fun getPeriods(latitude: Double, longitude: Double, context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
-            val periodsDef = async {
-                repository.getHourlyPeriods(latitude, longitude).take(13)
+            val properties = repository.getLocationProperties(latitude, longitude)
+
+            val hourlyPeriodsDef = async {
+                repository.getForecastProperties(properties?.forecastHourly)
+                    ?.take(HOURLY_ITEM_LIMIT) ?: listOf()
+            }
+
+            val dailyPeriodsDef = async {
+                repository.getForecastProperties(properties?.forecast) ?: listOf()
             }
 
             val cityStringDef = async {
@@ -36,9 +43,14 @@ class ForecastScreenViewModel @Inject constructor(
                     ?.firstOrNull()?.locality ?: ""
             }
 
-            periods = periodsDef.await()
+            hourlyPeriods = hourlyPeriodsDef.await()
+            dailyPeriods = dailyPeriodsDef.await()
             cityString = cityStringDef.await()
         }
 
+    }
+
+    companion object {
+        const val HOURLY_ITEM_LIMIT = 24
     }
 }

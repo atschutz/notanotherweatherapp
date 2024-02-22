@@ -1,13 +1,13 @@
 package com.example.notanotherweatherapp.ui.compose
 
-import android.location.Geocoder
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -26,7 +26,7 @@ fun ForecastScreen(currentLocation: LatLng?) {
     val context = LocalContext.current
 
     if (currentLocation != null &&
-        (viewModel.periods.isEmpty() || viewModel.cityString.isEmpty())
+        (viewModel.hourlyPeriods.isEmpty() || viewModel.cityString.isEmpty())
     ) {
         viewModel.getPeriods(
             currentLocation.latitude,
@@ -35,7 +35,7 @@ fun ForecastScreen(currentLocation: LatLng?) {
         )
     }
 
-    if (viewModel.cityString.isEmpty() || viewModel.periods.isEmpty()) {
+    if (viewModel.cityString.isEmpty() || viewModel.hourlyPeriods.isEmpty()) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -50,7 +50,7 @@ fun ForecastScreen(currentLocation: LatLng?) {
     } else {
         Column {
             CurrentForecast(
-                period = viewModel.periods.firstOrNull(),
+                period = viewModel.hourlyPeriods.firstOrNull(),
                 locationString = viewModel.cityString,
             )
             ClothingRow(
@@ -58,25 +58,29 @@ fun ForecastScreen(currentLocation: LatLng?) {
                 modifier = Modifier
                     .padding(top = 8.dp)
             )
-            Row(
-                modifier = Modifier
-                    .padding(top = 8.dp, bottom = 8.dp)
-            ) {
+            Row(modifier = Modifier.weight(1F)) {
                 ForecastInfoBox(
-                    period = viewModel.periods.firstOrNull(),
-                    modifier = Modifier.weight(0.65F),
-                )
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    period = viewModel.hourlyPeriods.firstOrNull(),
                     modifier = Modifier
-                        .fillMaxSize()
-                        .weight(0.35F)
+                        .weight(0.65F)
+                        .padding(top = 8.dp, bottom = 8.dp),
+                )
+                LazyColumn(modifier = Modifier
+                    .fillMaxSize()
+                    .weight(0.35F)
                 ) {
-                    viewModel.periods.forEachIndexed { index, period ->
-                        if (index != 0) HourlyForecast(period = period, Modifier.weight(1F))
+                    itemsIndexed(viewModel.hourlyPeriods) { index, period ->
+                        if (index != 0) HourlyForecast(
+                            period = period,
+                            modifier =
+                                if (index == viewModel.hourlyPeriods.lastIndex) {
+                                    Modifier.padding(bottom = 8.dp)
+                                } else Modifier
+                        )
                     }
                 }
             }
+            DailyForecastRow(periods = viewModel.dailyPeriods)
         }
     }
 }

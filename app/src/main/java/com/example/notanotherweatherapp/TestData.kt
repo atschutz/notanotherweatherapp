@@ -16,7 +16,7 @@ val TEST_RELATIVE_HUMIDITY =
 
 val TEST_PERIOD = Period(
     number = 1,
-    name = "",
+    name = "Wednesday Night",
     startTime = "2024-02-17T22:00:00-06:00",
     endTime = "2024-02-17T23:00:00-06:00",
     isDayTime = true,

@@ -15,13 +15,14 @@ class ForecastWebService @Inject constructor() {
 
         api = retrofit.create(ForecastApi::class.java)
     }
+
+    suspend fun getLocationResponse(latitude: Double, longitude: Double) =
+        api.getLocationResponse(latitude, longitude)
+
+    suspend fun getForecastResponse(url: String?) =
+        api.getForecastResponse(url)
+
     companion object {
         const val BASE_URL = "https://api.weather.gov/"
     }
-
-    suspend fun getForecastResponse(latitude: Double, longitude: Double) =
-        api.getForecastResponse(latitude, longitude)
-
-    suspend fun getHourlyResponse(url: String?) =
-        api.getHourlyResponse(url)
 }

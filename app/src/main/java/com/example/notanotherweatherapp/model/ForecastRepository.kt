@@ -4,17 +4,20 @@ import android.util.Log
 import javax.inject.Inject
 
 class ForecastRepository @Inject constructor(private val webService: ForecastWebService) {
-    suspend fun getHourlyPeriods(latitude: Double, longitude: Double): List<Period> {
-        val response = webService.getForecastResponse(latitude, longitude)
+    suspend fun getLocationProperties(latitude: Double, longitude: Double): LocationProperties? {
+        val response = webService.getLocationResponse(latitude, longitude)
 
         return if (response.isSuccessful) {
-            getHourlyPeriods(response.body()?.properties?.forecastHourly)
+            response.body()?.properties
         } else {
-            Log.e("Error getting hourly URL", "${response.code()}: ${response.message()}")
-            listOf()
+            Log.e(
+                "Error getting location properties",
+                "${response.code()}: ${response.message()}"
+            )
+            null
         }
     }
 
-    private suspend fun getHourlyPeriods(url: String?): List<Period> =
-        webService.getHourlyResponse(url).body()?.properties?.periods ?: listOf()
+    suspend fun getForecastProperties(url: String?) =
+        webService.getForecastResponse(url).body()?.properties?.periods
 }
