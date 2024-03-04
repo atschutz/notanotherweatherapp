@@ -18,6 +18,6 @@ class ForecastRepository @Inject constructor(private val webService: ForecastWeb
         }
     }
 
-    suspend fun getForecastProperties(url: String?) =
+    suspend fun getForecastPeriods(url: String?) =
         webService.getForecastResponse(url).body()?.properties?.periods
 }

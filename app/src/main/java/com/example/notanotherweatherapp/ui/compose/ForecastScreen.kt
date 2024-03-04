@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.notanotherweatherapp.TEST_CLOTHING_MAP
+import com.example.notanotherweatherapp.model.Clothing
 import com.example.notanotherweatherapp.ui.ForecastScreenViewModel
 import com.google.android.gms.maps.model.LatLng
 
@@ -28,7 +28,7 @@ fun ForecastScreen(currentLocation: LatLng?) {
     if (currentLocation != null &&
         (viewModel.hourlyPeriods.isEmpty() || viewModel.cityString.isEmpty())
     ) {
-        viewModel.getPeriods(
+        viewModel.getPeriodsAndClothing(
             currentLocation.latitude,
             currentLocation.longitude,
             context,
@@ -54,7 +54,8 @@ fun ForecastScreen(currentLocation: LatLng?) {
                 locationString = viewModel.cityString,
             )
             ClothingRow(
-                clothingMap = TEST_CLOTHING_MAP,
+                clothing = Clothing.entries,
+                activeClothing = viewModel.activeClothing,
                 modifier = Modifier
                     .padding(top = 8.dp)
             )

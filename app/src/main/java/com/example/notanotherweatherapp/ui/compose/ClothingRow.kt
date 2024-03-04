@@ -21,10 +21,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.notanotherweatherapp.R
+import com.example.notanotherweatherapp.model.Clothing
 
 @Composable
-fun ClothingRow(clothingMap: Map<String, Int>, modifier: Modifier = Modifier) {
+fun ClothingRow(clothing: List<Clothing>, activeClothing: Set<Clothing>, modifier: Modifier = Modifier) {
     Card(
         shape = RectangleShape,
         colors = CardDefaults.cardColors(containerColor = Color.LightGray),
@@ -39,7 +39,7 @@ fun ClothingRow(clothingMap: Map<String, Int>, modifier: Modifier = Modifier) {
             modifier = Modifier
                 .padding(horizontal = 8.dp)
         ) {
-            clothingMap.onEachIndexed { index, entry ->
+            clothing.forEachIndexed { index, item ->
                 if (index != 0) {
                     Box(
                         modifier = Modifier
@@ -50,10 +50,11 @@ fun ClothingRow(clothingMap: Map<String, Int>, modifier: Modifier = Modifier) {
                     )
                 }
                 Image(
-                    painter = painterResource(id = entry.value),
-                    contentDescription = "${entry.key} icon",
+                    painter = painterResource(id = item.iconId),
+                    contentDescription = "${item.displayName} icon",
                     contentScale = ContentScale.Fit,
-                    modifier = Modifier.weight(1F),
+                    alpha = if (activeClothing.contains(item)) 1.0F else 0.4F,
+                    modifier = Modifier.weight(1F).padding(8.dp),
                 )
             }
         }
@@ -69,15 +70,12 @@ fun ClothingRow(clothingMap: Map<String, Int>, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun ClothingRowPreview() {
-    val map = mapOf(
-        "Gloves" to R.drawable.ic_sunny,
-        "Boots" to R.drawable.ic_sunny,
-        "Short sleeve shirt" to R.drawable.ic_sunny,
-        "Long Sleeve shirt" to R.drawable.ic_sunny,
-        "Shorts" to R.drawable.ic_sunny,
-        "Pants" to R.drawable.ic_sunny,
-        "Jacket" to R.drawable.ic_sunny,
-        "Umbrella" to R.drawable.ic_sunny,
+    ClothingRow(
+        clothing = Clothing.entries,
+        activeClothing = setOf(
+            Clothing.TEE_SHIRT,
+            Clothing.SWEATSHIRT,
+            Clothing.UMBRELLA,
+        )
     )
-ClothingRow(clothingMap = map, Modifier)
 }
