@@ -43,7 +43,6 @@ fun CurrentForecast(period: Period?, locationString: String) {
             modifier = Modifier
                 .height(220.dp)
                 .fillMaxWidth()
-                .padding(top = 12.dp, end = 12.dp)
                 .padding(8.dp)
         ) {
             Column(
@@ -67,6 +66,7 @@ fun CurrentForecast(period: Period?, locationString: String) {
                 )
             }
             Box(
+                contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .fillMaxHeight()
             ) {

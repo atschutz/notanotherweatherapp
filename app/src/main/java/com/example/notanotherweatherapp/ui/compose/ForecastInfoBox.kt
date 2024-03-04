@@ -2,9 +2,12 @@ package com.example.notanotherweatherapp.ui.compose
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,8 +28,12 @@ fun ForecastInfoBox(period: Period?, modifier: Modifier = Modifier) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(12.dp)
         ) {
-
+            Text(
+                text = period?.detailedForecast ?: "",
+                style = MaterialTheme.typography.bodyLarge
+            )
         }
     }
 }

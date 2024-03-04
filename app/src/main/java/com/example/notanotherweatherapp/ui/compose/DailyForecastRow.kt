@@ -30,12 +30,12 @@ import com.example.notanotherweatherapp.R
 import com.example.notanotherweatherapp.TEST_PERIOD
 import com.example.notanotherweatherapp.model.Period
 import com.example.notanotherweatherapp.safeSlice
+import com.example.notanotherweatherapp.ui.ForecastScreenViewModel.Companion.HOUR_DAY_RANGE
+import java.time.LocalDateTime
 
 @Composable
 fun DailyForecastRow(periods: List<Period>, modifier: Modifier = Modifier) {
-    // TODO Use grid data from API instead of all this!!!
-    val isLastItemNight =
-        periods.last().name?.contains("Night", ignoreCase = true) ?: true
+    val isDaytime = HOUR_DAY_RANGE.contains(LocalDateTime.now().hour)
 
     Card(
         shape = RoundedCornerShape(topStart = 24.dp),
@@ -60,30 +60,32 @@ fun DailyForecastRow(periods: List<Period>, modifier: Modifier = Modifier) {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween
             ){
-                val chunkedPeriods = if (isLastItemNight) {
-                    // Do nothing.
-                    periods.chunked(2)
-                } else {
-                    // Single chunk first period, remove last.
-                    listOf(listOf(periods[0])) +
-                    periods.slice(1..<periods.lastIndex).chunked(2)
-                }
-                chunkedPeriods.forEachIndexed { index, period ->
-                    if (index != 0) {
-                        Box(
+                if (periods.isNotEmpty()) {
+                    val chunkedPeriods = if (isDaytime) {
+                        // Do nothing.
+                        periods.chunked(2)
+                    } else {
+                        // Single chunk first period, remove last.
+                        listOf(listOf(periods[0])) +
+                        periods.slice(1..<periods.lastIndex).chunked(2)
+                    }
+                    chunkedPeriods.forEachIndexed { index, period ->
+                        if (index != 0) {
+                            Box(
+                                modifier = Modifier
+                                    .padding(vertical = 8.dp)
+                                    .background(Color.Gray)
+                                    .width(1.dp)
+                                    .fillMaxSize()
+                            )
+                        }
+                        DailyForecastItem(
+                            dayPeriod = period.first(),
+                            nightPeriod = period.last(),
                             modifier = Modifier
-                                .padding(vertical = 8.dp)
-                                .background(Color.Gray)
-                                .width(1.dp)
-                                .fillMaxSize()
+                                .weight(1F)
                         )
                     }
-                    DailyForecastItem(
-                        dayPeriod = period.first(),
-                        nightPeriod = period.last(),
-                        modifier = Modifier
-                            .weight(1F)
-                    )
                 }
             }
         }
@@ -96,20 +98,25 @@ fun DailyForecastItem(
     nightPeriod: Period,
     modifier: Modifier = Modifier,
 ) {
+    val isSinglePeriod = dayPeriod.name == nightPeriod.name
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier.padding(4.dp)
+        modifier = modifier
+            .padding(4.dp)
     ) {
         dayPeriod.name?.let {
             Text(
-                text = it.safeSlice(0..2),
+                text =
+                    if (dayPeriod.number == 1) "Now"
+                    else it.safeSlice(0..2),
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
             )
         }
         Text(
             text =
-                if (dayPeriod.name == nightPeriod.name) "${nightPeriod.temperature}°"
+                if (isSinglePeriod) "${nightPeriod.temperature}°"
                 else "${nightPeriod.temperature}° - ${dayPeriod.temperature}°",
             style = MaterialTheme.typography.bodySmall,
             fontWeight = FontWeight.Normal,
@@ -135,7 +142,7 @@ fun DailyForecastItem(
 
             if (probabilityOfPrecipitation > 0) {
                 Text(
-                    text = probabilityOfPrecipitation.toString(),
+                    text = "$probabilityOfPrecipitation%",
                     style = MaterialTheme.typography.labelSmall,
                     fontWeight = FontWeight.Normal,
                 )
@@ -174,6 +181,6 @@ fun DailyForecastRowPreview() {
 fun DailyForecastItemPreview() {
     DailyForecastItem(
         dayPeriod = TEST_PERIOD,
-        nightPeriod = TEST_PERIOD
+        nightPeriod = TEST_PERIOD,
     )
 }

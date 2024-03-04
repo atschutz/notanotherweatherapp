@@ -28,12 +28,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.notanotherweatherapp.R
+import com.example.notanotherweatherapp.TEST_HOURLY_GROUP
 import com.example.notanotherweatherapp.TEST_PERIOD
 import com.example.notanotherweatherapp.getTimeFromDateString
+import com.example.notanotherweatherapp.model.HourlyGroup
 import com.example.notanotherweatherapp.model.Period
 
 @Composable
-fun HourlyForecast(period: Period?, modifier: Modifier = Modifier) {
+fun HourlyForecast(hourlyGroup: HourlyGroup?, modifier: Modifier = Modifier) {
     Card(
         shape = RoundedCornerShape(topStart = 100.dp, bottomStart = 100.dp),
         colors = CardDefaults.cardColors(containerColor = Color.LightGray),
@@ -49,7 +51,9 @@ fun HourlyForecast(period: Period?, modifier: Modifier = Modifier) {
             modifier = Modifier.fillMaxWidth()
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ic_sunny),
+                painter = painterResource(
+                    id = hourlyGroup?.weatherDisplay?.iconId ?: R.drawable.ic_question_mark
+                ),
                 contentDescription = "Weather icon",
                 contentScale = ContentScale.FillHeight,
                 modifier = Modifier
@@ -68,14 +72,14 @@ fun HourlyForecast(period: Period?, modifier: Modifier = Modifier) {
                         .padding(end = 4.dp)
                 ) {
                     Text(
-                        text = getTimeFromDateString(period?.startTime ?: ""),
+                        text = getTimeFromDateString(hourlyGroup?.period?.startTime ?: ""),
                         textAlign = TextAlign.End,
                         fontWeight = FontWeight.SemiBold,
                         style = MaterialTheme.typography.labelMedium,
                     )
 
                     val probabilityOfPrecipitation =
-                        period?.probabilityOfPrecipitation?.value?.toInt() ?: 0
+                        hourlyGroup?.period?.probabilityOfPrecipitation?.value?.toInt() ?: 0
 
                     if (probabilityOfPrecipitation > 0) {
                         Text(
@@ -86,7 +90,7 @@ fun HourlyForecast(period: Period?, modifier: Modifier = Modifier) {
                     }
                 }
                 Text(
-                    text = "${period?.temperature ?: ""}°",
+                    text = "${hourlyGroup?.period?.temperature ?: ""}°",
                     style = MaterialTheme.typography.labelLarge
                 )
             }
@@ -97,5 +101,5 @@ fun HourlyForecast(period: Period?, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun HourlyForecastPreview() {
-    HourlyForecast(period = TEST_PERIOD, Modifier)
+    HourlyForecast(hourlyGroup = TEST_HOURLY_GROUP, Modifier)
 }

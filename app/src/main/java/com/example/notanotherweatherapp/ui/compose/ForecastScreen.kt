@@ -26,7 +26,7 @@ fun ForecastScreen(currentLocation: LatLng?) {
     val context = LocalContext.current
 
     if (currentLocation != null &&
-        (viewModel.hourlyPeriods.isEmpty() || viewModel.cityString.isEmpty())
+        (viewModel.hourlyGroups.isEmpty() || viewModel.cityString.isEmpty())
     ) {
         viewModel.getPeriodsAndClothing(
             currentLocation.latitude,
@@ -35,7 +35,7 @@ fun ForecastScreen(currentLocation: LatLng?) {
         )
     }
 
-    if (viewModel.cityString.isEmpty() || viewModel.hourlyPeriods.isEmpty()) {
+    if (viewModel.cityString.isEmpty() || viewModel.hourlyGroups.isEmpty()) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -50,7 +50,7 @@ fun ForecastScreen(currentLocation: LatLng?) {
     } else {
         Column {
             CurrentForecast(
-                period = viewModel.hourlyPeriods.firstOrNull(),
+                period = viewModel.hourlyGroups.firstOrNull()?.period,
                 locationString = viewModel.cityString,
             )
             ClothingRow(
@@ -61,7 +61,7 @@ fun ForecastScreen(currentLocation: LatLng?) {
             )
             Row(modifier = Modifier.weight(1F)) {
                 ForecastInfoBox(
-                    period = viewModel.hourlyPeriods.firstOrNull(),
+                    period = viewModel.dailyPeriods.firstOrNull(),
                     modifier = Modifier
                         .weight(0.65F)
                         .padding(top = 8.dp, bottom = 8.dp),
@@ -70,11 +70,11 @@ fun ForecastScreen(currentLocation: LatLng?) {
                     .fillMaxSize()
                     .weight(0.35F)
                 ) {
-                    itemsIndexed(viewModel.hourlyPeriods) { index, period ->
+                    itemsIndexed(viewModel.hourlyGroups) { index, group ->
                         if (index != 0) HourlyForecast(
-                            period = period,
+                            hourlyGroup = group,
                             modifier =
-                                if (index == viewModel.hourlyPeriods.lastIndex) {
+                                if (index == viewModel.hourlyGroups.lastIndex) {
                                     Modifier.padding(bottom = 8.dp)
                                 } else Modifier
                         )

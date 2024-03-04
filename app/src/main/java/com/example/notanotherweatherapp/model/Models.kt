@@ -31,6 +31,7 @@ data class Period(
     val windDirection: String?,
     val icon: String?,
     val shortForecast: String?,
+    val detailedForecast: String?,
 )
 
 data class ProbabilityOfPrecipitation(
@@ -46,4 +47,10 @@ data class Dewpoint(
 data class RelativeHumidity(
     val unitCode: String,
     val value: Double,
+)
+
+data class HourlyGroup(
+    val period: Period,
+    val weatherDisplay: WeatherDisplay?,
+    val clothing: Clothing?,
 )

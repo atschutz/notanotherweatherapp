@@ -1,9 +1,12 @@
 package com.example.notanotherweatherapp
 
+import com.example.notanotherweatherapp.model.Clothing
 import com.example.notanotherweatherapp.model.Dewpoint
+import com.example.notanotherweatherapp.model.HourlyGroup
 import com.example.notanotherweatherapp.model.Period
 import com.example.notanotherweatherapp.model.ProbabilityOfPrecipitation
 import com.example.notanotherweatherapp.model.RelativeHumidity
+import com.example.notanotherweatherapp.model.WeatherDisplay
 
 val TEST_PROBABILITY_OF_PRECIPITATION =
     ProbabilityOfPrecipitation("wmoUnit:percent", 30.0)
@@ -28,6 +31,13 @@ val TEST_PERIOD = Period(
     windDirection = "SW",
     icon = "https://api.weather.gov/icons/land/night/skc,0?size=small",
     shortForecast = "Clear",
+    detailedForecast = "A chance of rain showers. Mostly cloudy, with a high near 48. Chance of precipitation is 50%."
+)
+
+val TEST_HOURLY_GROUP = HourlyGroup(
+    period = TEST_PERIOD,
+    clothing = Clothing.TEE_SHIRT,
+    weatherDisplay = WeatherDisplay.CLEAR_DAY,
 )
 
 val TEST_CLOTHING_MAP = mapOf(
