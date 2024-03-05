@@ -22,7 +22,7 @@ data class Period(
     val name: String?,
     val startTime: String?,
     val endTime: String?,
-    val isDayTime: Boolean?,
+    val isDaytime: Boolean?,
     val temperature: Int?,
     val probabilityOfPrecipitation: ProbabilityOfPrecipitation?,
     val dewpoint: Dewpoint,
@@ -49,7 +49,7 @@ data class RelativeHumidity(
     val value: Double,
 )
 
-data class HourlyGroup(
+data class PeriodGroup(
     val period: Period,
     val weatherDisplay: WeatherDisplay?,
     val clothing: Clothing?,

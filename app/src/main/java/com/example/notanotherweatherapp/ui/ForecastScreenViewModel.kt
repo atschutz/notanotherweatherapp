@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.notanotherweatherapp.model.Clothing
 import com.example.notanotherweatherapp.model.ForecastRepository
-import com.example.notanotherweatherapp.model.HourlyGroup
+import com.example.notanotherweatherapp.model.PeriodGroup
 import com.example.notanotherweatherapp.model.Period
 import com.example.notanotherweatherapp.model.WeatherDisplay
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,8 +23,8 @@ import javax.inject.Inject
 class ForecastScreenViewModel @Inject constructor(
     private val repository: ForecastRepository
 ) : ViewModel() {
-    var dailyPeriods: List<Period> by mutableStateOf(listOf())
-    var hourlyGroups: List<HourlyGroup> by mutableStateOf(listOf())
+    var dailyGroups: List<PeriodGroup> by mutableStateOf(listOf())
+    var hourlyGroups: List<PeriodGroup> by mutableStateOf(listOf())
 
     var cityString by mutableStateOf("")
 
@@ -44,7 +44,14 @@ class ForecastScreenViewModel @Inject constructor(
             }
 
             launch {
-                dailyPeriods = repository.getForecastPeriods(properties?.forecast) ?: listOf()
+                dailyGroups = (repository.getForecastPeriods(properties?.forecast) ?: listOf())
+                    .map {
+                        PeriodGroup(
+                            period = it,
+                            weatherDisplay = getWeatherDisplay(it),
+                            clothing = null,
+                        )
+                    }
             }
 
             launch {
@@ -55,8 +62,8 @@ class ForecastScreenViewModel @Inject constructor(
         }
     }
 
-    private fun getActiveClothing(hourlyGroups: List<HourlyGroup>): Set<Clothing> {
-        val activeClothing = hourlyGroups
+    private fun getActiveClothing(periodGroups: List<PeriodGroup>): Set<Clothing> {
+        val activeClothing = periodGroups
             .filterNot { it.clothing == null }
             .map { it.clothing ?: Clothing.TEE_SHIRT }
             .toMutableSet()
@@ -65,7 +72,7 @@ class ForecastScreenViewModel @Inject constructor(
         var hasSnow = false
 
 
-        hourlyGroups.forEach { group ->
+        periodGroups.forEach { group ->
             // Add precipitation items
             if (!hasRain || !hasSnow) {
                 group.period.probabilityOfPrecipitation?.value?.let {
@@ -88,7 +95,6 @@ class ForecastScreenViewModel @Inject constructor(
     private fun mapPeriodsToHourlyGroups(periods: List<Period>) =
         periods.map { period ->
             var clothing: Clothing? = null
-            var weatherDisplay: WeatherDisplay? = null
 
             for (clothingItem in Clothing.entries) {
                 if (clothingItem.temperatureRange.contains(period.temperature)) {
@@ -97,27 +103,33 @@ class ForecastScreenViewModel @Inject constructor(
                 }
             }
 
-            for (weatherDisplayItem in WeatherDisplay.entries) {
-                if (weatherDisplayItem.conditions
-                    .any { (period.shortForecast ?: "").contains(it, ignoreCase = true)}
-                ) {
-                    weatherDisplay = weatherDisplayItem
-                    break
-                }
-            }
-
-            val group = HourlyGroup(
+            val group = PeriodGroup(
                 period = period,
                 clothing = clothing,
-                weatherDisplay = weatherDisplay,
+                weatherDisplay = getWeatherDisplay(period)
             )
             Log.d("-as-", "$group")
             group
         }
 
+    private fun getWeatherDisplay(period: Period): WeatherDisplay? {
+        for (weatherDisplayItem in WeatherDisplay.entries) {
+            if (weatherDisplayItem.conditions
+                    .any {
+                        (period.shortForecast ?: "").contains(it, ignoreCase = true) &&
+                                period.isDaytime == null ||
+                                period.isDaytime == weatherDisplayItem.isForDay
+                    }
+            ) {
+                return weatherDisplayItem
+            }
+        }
+        return null
+    }
+
     fun refresh(latitude: Double, longitude: Double, context: Context): Boolean {
         hourlyGroups = listOf()
-        dailyPeriods = listOf()
+        dailyGroups = listOf()
         cityString = ""
 
         getPeriodsAndClothing(latitude, longitude, context)
@@ -127,7 +139,5 @@ class ForecastScreenViewModel @Inject constructor(
     companion object {
         const val FREEZING_POINT = 32
         const val HOURLY_ITEM_LIMIT = 24
-
-        val HOUR_DAY_RANGE = (6..18)
     }
 }

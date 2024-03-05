@@ -23,11 +23,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.notanotherweatherapp.R
-import com.example.notanotherweatherapp.TEST_PERIOD
-import com.example.notanotherweatherapp.model.Period
+import com.example.notanotherweatherapp.TEST_HOURLY_GROUP
+import com.example.notanotherweatherapp.model.PeriodGroup
 
 @Composable
-fun CurrentForecast(period: Period?, locationString: String) {
+fun CurrentForecast(periodGroup: PeriodGroup?, locationString: String) {
     Card(
         shape = RoundedCornerShape(topStart = 0.dp, bottomStart = 0.dp, topEnd = 100.dp, bottomEnd = 100.dp),
         colors = CardDefaults.cardColors(containerColor = Color.LightGray),
@@ -57,11 +57,11 @@ fun CurrentForecast(period: Period?, locationString: String) {
                     style = MaterialTheme.typography.titleSmall,
                 )
                 Text(
-                    text = "${period?.temperature ?: ""}°",
+                    text = "${periodGroup?.period?.temperature ?: ""}°",
                     style = MaterialTheme.typography.titleLarge
                 )
                 Text(
-                    text = period?.shortForecast ?: "",
+                    text = periodGroup?.period?.shortForecast ?: "",
                     style = MaterialTheme.typography.titleSmall,
                 )
             }
@@ -83,5 +83,5 @@ fun CurrentForecast(period: Period?, locationString: String) {
 @Preview(showBackground = true)
 @Composable
 fun CurrentForecastPreview() {
-    CurrentForecast(period = TEST_PERIOD, "New York, NY")
+    CurrentForecast(periodGroup = TEST_HOURLY_GROUP, "New York, NY")
 }

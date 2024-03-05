@@ -1,17 +1,13 @@
 package com.example.notanotherweatherapp.ui.compose
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -29,13 +25,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.notanotherweatherapp.R
 import com.example.notanotherweatherapp.TEST_HOURLY_GROUP
-import com.example.notanotherweatherapp.TEST_PERIOD
 import com.example.notanotherweatherapp.getTimeFromDateString
-import com.example.notanotherweatherapp.model.HourlyGroup
-import com.example.notanotherweatherapp.model.Period
+import com.example.notanotherweatherapp.model.PeriodGroup
 
 @Composable
-fun HourlyForecast(hourlyGroup: HourlyGroup?, modifier: Modifier = Modifier) {
+fun HourlyForecast(periodGroup: PeriodGroup?, modifier: Modifier = Modifier) {
     Card(
         shape = RoundedCornerShape(topStart = 100.dp, bottomStart = 100.dp),
         colors = CardDefaults.cardColors(containerColor = Color.LightGray),
@@ -52,7 +46,7 @@ fun HourlyForecast(hourlyGroup: HourlyGroup?, modifier: Modifier = Modifier) {
         ) {
             Image(
                 painter = painterResource(
-                    id = hourlyGroup?.weatherDisplay?.iconId ?: R.drawable.ic_question_mark
+                    id = periodGroup?.weatherDisplay?.iconId ?: R.drawable.ic_question_mark
                 ),
                 contentDescription = "Weather icon",
                 contentScale = ContentScale.FillHeight,
@@ -72,14 +66,14 @@ fun HourlyForecast(hourlyGroup: HourlyGroup?, modifier: Modifier = Modifier) {
                         .padding(end = 4.dp)
                 ) {
                     Text(
-                        text = getTimeFromDateString(hourlyGroup?.period?.startTime ?: ""),
+                        text = getTimeFromDateString(periodGroup?.period?.startTime ?: ""),
                         textAlign = TextAlign.End,
                         fontWeight = FontWeight.SemiBold,
                         style = MaterialTheme.typography.labelMedium,
                     )
 
                     val probabilityOfPrecipitation =
-                        hourlyGroup?.period?.probabilityOfPrecipitation?.value?.toInt() ?: 0
+                        periodGroup?.period?.probabilityOfPrecipitation?.value?.toInt() ?: 0
 
                     if (probabilityOfPrecipitation > 0) {
                         Text(
@@ -90,7 +84,7 @@ fun HourlyForecast(hourlyGroup: HourlyGroup?, modifier: Modifier = Modifier) {
                     }
                 }
                 Text(
-                    text = "${hourlyGroup?.period?.temperature ?: ""}°",
+                    text = "${periodGroup?.period?.temperature ?: ""}°",
                     style = MaterialTheme.typography.labelLarge
                 )
             }
@@ -101,5 +95,5 @@ fun HourlyForecast(hourlyGroup: HourlyGroup?, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun HourlyForecastPreview() {
-    HourlyForecast(hourlyGroup = TEST_HOURLY_GROUP, Modifier)
+    HourlyForecast(periodGroup = TEST_HOURLY_GROUP, Modifier)
 }

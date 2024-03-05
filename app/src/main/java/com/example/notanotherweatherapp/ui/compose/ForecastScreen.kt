@@ -50,7 +50,7 @@ fun ForecastScreen(currentLocation: LatLng?) {
     } else {
         Column {
             CurrentForecast(
-                period = viewModel.hourlyGroups.firstOrNull()?.period,
+                periodGroup = viewModel.hourlyGroups.firstOrNull(),
                 locationString = viewModel.cityString,
             )
             ClothingRow(
@@ -61,7 +61,7 @@ fun ForecastScreen(currentLocation: LatLng?) {
             )
             Row(modifier = Modifier.weight(1F)) {
                 ForecastInfoBox(
-                    period = viewModel.dailyPeriods.firstOrNull(),
+                    period = viewModel.dailyGroups.firstOrNull()?.period,
                     modifier = Modifier
                         .weight(0.65F)
                         .padding(top = 8.dp, bottom = 8.dp),
@@ -72,7 +72,7 @@ fun ForecastScreen(currentLocation: LatLng?) {
                 ) {
                     itemsIndexed(viewModel.hourlyGroups) { index, group ->
                         if (index != 0) HourlyForecast(
-                            hourlyGroup = group,
+                            periodGroup = group,
                             modifier =
                                 if (index == viewModel.hourlyGroups.lastIndex) {
                                     Modifier.padding(bottom = 8.dp)
@@ -81,7 +81,7 @@ fun ForecastScreen(currentLocation: LatLng?) {
                     }
                 }
             }
-            DailyForecastRow(periods = viewModel.dailyPeriods)
+            DailyForecastRow(dailyGroups = viewModel.dailyGroups)
         }
     }
 }

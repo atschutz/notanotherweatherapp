@@ -27,16 +27,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.notanotherweatherapp.R
-import com.example.notanotherweatherapp.TEST_PERIOD
-import com.example.notanotherweatherapp.model.Period
+import com.example.notanotherweatherapp.TEST_HOURLY_GROUP
+import com.example.notanotherweatherapp.model.PeriodGroup
 import com.example.notanotherweatherapp.safeSlice
-import com.example.notanotherweatherapp.ui.ForecastScreenViewModel.Companion.HOUR_DAY_RANGE
-import java.time.LocalDateTime
 
 @Composable
-fun DailyForecastRow(periods: List<Period>, modifier: Modifier = Modifier) {
-    val isDaytime = HOUR_DAY_RANGE.contains(LocalDateTime.now().hour)
-
+fun DailyForecastRow(dailyGroups: List<PeriodGroup>, modifier: Modifier = Modifier) {
     Card(
         shape = RoundedCornerShape(topStart = 24.dp),
         colors = CardDefaults.cardColors(containerColor = Color.LightGray),
@@ -60,16 +56,16 @@ fun DailyForecastRow(periods: List<Period>, modifier: Modifier = Modifier) {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween
             ){
-                if (periods.isNotEmpty()) {
-                    val chunkedPeriods = if (isDaytime) {
+                if (dailyGroups.isNotEmpty()) {
+                    val chunkedPeriods = if (dailyGroups[0].period.isDaytime == true) {
                         // Do nothing.
-                        periods.chunked(2)
+                        dailyGroups.chunked(2)
                     } else {
                         // Single chunk first period, remove last.
-                        listOf(listOf(periods[0])) +
-                        periods.slice(1..<periods.lastIndex).chunked(2)
+                        listOf(listOf(dailyGroups[0])) +
+                        dailyGroups.slice(1..<dailyGroups.lastIndex).chunked(2)
                     }
-                    chunkedPeriods.forEachIndexed { index, period ->
+                    chunkedPeriods.forEachIndexed { index, dailyGroupChunk ->
                         if (index != 0) {
                             Box(
                                 modifier = Modifier
@@ -80,8 +76,8 @@ fun DailyForecastRow(periods: List<Period>, modifier: Modifier = Modifier) {
                             )
                         }
                         DailyForecastItem(
-                            dayPeriod = period.first(),
-                            nightPeriod = period.last(),
+                            dayGroup = dailyGroupChunk.first(),
+                            nightGroup = dailyGroupChunk.last(),
                             modifier = Modifier
                                 .weight(1F)
                         )
@@ -94,30 +90,32 @@ fun DailyForecastRow(periods: List<Period>, modifier: Modifier = Modifier) {
 
 @Composable
 fun DailyForecastItem(
-    dayPeriod: Period,
-    nightPeriod: Period,
+    dayGroup: PeriodGroup,
+    nightGroup: PeriodGroup,
     modifier: Modifier = Modifier,
 ) {
-    val isSinglePeriod = dayPeriod.name == nightPeriod.name
+    val isSinglePeriod = dayGroup == nightGroup
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .padding(4.dp)
     ) {
-        dayPeriod.name?.let {
+        dayGroup.period.name?.let {
             Text(
                 text =
-                    if (dayPeriod.number == 1) "Now"
-                    else it.safeSlice(0..2),
+                    if (dayGroup.period.number == 1) {
+                        if (dayGroup.period.isDaytime == true) "Today"
+                        else "Tonight"
+                    } else it.safeSlice(0..2),
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
             )
         }
         Text(
             text =
-                if (isSinglePeriod) "${nightPeriod.temperature}°"
-                else "${nightPeriod.temperature}° - ${dayPeriod.temperature}°",
+                if (isSinglePeriod) "${nightGroup.period.temperature}°"
+                else "${nightGroup.period.temperature}° - ${nightGroup.period.temperature}°",
             style = MaterialTheme.typography.bodySmall,
             fontWeight = FontWeight.Normal,
         )
@@ -126,18 +124,20 @@ fun DailyForecastItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ic_sunny),
+                painter = painterResource(
+                    id = dayGroup.weatherDisplay?.iconId ?: R.drawable.ic_question_mark
+                ),
                 // TODO icon will vary, need to handle.
-                contentDescription = "${dayPeriod.shortForecast} icon",
+                contentDescription = "${dayGroup.period.shortForecast} icon",
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
                     .padding(end = 4.dp)
             )
 
             val probabilityOfPrecipitation =
-                (dayPeriod.probabilityOfPrecipitation?.value ?: 0.0)
+                (dayGroup.period.probabilityOfPrecipitation?.value ?: 0.0)
                     .coerceAtLeast(
-                        nightPeriod.probabilityOfPrecipitation?.value ?: 0.0
+                        nightGroup.period.probabilityOfPrecipitation?.value ?: 0.0
                     ).toInt()
 
             if (probabilityOfPrecipitation > 0) {
@@ -155,23 +155,20 @@ fun DailyForecastItem(
 @Composable
 fun DailyForecastRowPreview() {
     DailyForecastRow(
-        periods = listOf(
-            TEST_PERIOD,
-            TEST_PERIOD,
-            TEST_PERIOD,
-            TEST_PERIOD,
-            TEST_PERIOD,
-            TEST_PERIOD,
-            TEST_PERIOD,
-            TEST_PERIOD,
-            TEST_PERIOD,
-            TEST_PERIOD,
-            TEST_PERIOD,
-            TEST_PERIOD,
-            TEST_PERIOD,
-            TEST_PERIOD,
-            TEST_PERIOD,
-            TEST_PERIOD,
+        dailyGroups = listOf(
+            TEST_HOURLY_GROUP,
+            TEST_HOURLY_GROUP,
+            TEST_HOURLY_GROUP,
+            TEST_HOURLY_GROUP,
+            TEST_HOURLY_GROUP,
+            TEST_HOURLY_GROUP,
+            TEST_HOURLY_GROUP,
+            TEST_HOURLY_GROUP,
+            TEST_HOURLY_GROUP,
+            TEST_HOURLY_GROUP,
+            TEST_HOURLY_GROUP,
+            TEST_HOURLY_GROUP,
+            TEST_HOURLY_GROUP,
         )
     )
 }
@@ -180,7 +177,7 @@ fun DailyForecastRowPreview() {
 @Composable
 fun DailyForecastItemPreview() {
     DailyForecastItem(
-        dayPeriod = TEST_PERIOD,
-        nightPeriod = TEST_PERIOD,
+        dayGroup= TEST_HOURLY_GROUP,
+        nightGroup = TEST_HOURLY_GROUP,
     )
 }
