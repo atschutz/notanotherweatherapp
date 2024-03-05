@@ -48,7 +48,8 @@ fun HourlyForecast(periodGroup: PeriodGroup?, modifier: Modifier = Modifier) {
                 painter = painterResource(
                     id = periodGroup?.weatherDisplay?.iconId ?: R.drawable.ic_question_mark
                 ),
-                contentDescription = "Weather icon",
+                contentDescription =
+                    "${periodGroup?.weatherDisplay?.displayName ?: "Weather"} icon",
                 contentScale = ContentScale.FillHeight,
                 modifier = Modifier
                     .fillMaxHeight()
@@ -84,7 +85,7 @@ fun HourlyForecast(periodGroup: PeriodGroup?, modifier: Modifier = Modifier) {
                     }
                 }
                 Text(
-                    text = "${periodGroup?.period?.temperature ?: ""}°",
+                    text = "${periodGroup?.period?.temperature}°",
                     style = MaterialTheme.typography.labelLarge
                 )
             }

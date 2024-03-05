@@ -1,7 +1,6 @@
 package com.example.notanotherweatherapp.model
 
 import com.example.notanotherweatherapp.R
-import com.google.android.gms.common.api.BooleanResult
 
 enum class WeatherDisplay(
     val displayName: String,

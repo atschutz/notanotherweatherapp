@@ -71,8 +71,12 @@ fun CurrentForecast(periodGroup: PeriodGroup?, locationString: String) {
                     .fillMaxHeight()
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_sunny),
-                    contentDescription = "Weather icon",
+                    painter =
+                        painterResource(
+                            id = periodGroup?.weatherDisplay?.iconId ?: R.drawable.ic_question_mark
+                        ),
+                    contentDescription =
+                        "${periodGroup?.weatherDisplay?.displayName ?: "Weather"} icon",
                     contentScale = ContentScale.FillHeight,
                 )
             }

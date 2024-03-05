@@ -117,8 +117,8 @@ class ForecastScreenViewModel @Inject constructor(
             if (weatherDisplayItem.conditions
                     .any {
                         (period.shortForecast ?: "").contains(it, ignoreCase = true) &&
-                                period.isDaytime == null ||
-                                period.isDaytime == weatherDisplayItem.isForDay
+                                (weatherDisplayItem.isForDay == null ||
+                                weatherDisplayItem.isForDay == period.isDaytime)
                     }
             ) {
                 return weatherDisplayItem
