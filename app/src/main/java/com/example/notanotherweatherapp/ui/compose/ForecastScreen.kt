@@ -63,12 +63,12 @@ fun ForecastScreen(currentLocation: LatLng?) {
                 ForecastInfoBox(
                     period = viewModel.dailyGroups.firstOrNull()?.period,
                     modifier = Modifier
-                        .weight(0.65F)
+                        .weight(0.67F)
                         .padding(top = 8.dp, bottom = 8.dp),
                 )
                 LazyColumn(modifier = Modifier
                     .fillMaxSize()
-                    .weight(0.35F)
+                    .weight(0.33F)
                 ) {
                     itemsIndexed(viewModel.hourlyGroups) { index, group ->
                         if (index != 0) HourlyForecast(

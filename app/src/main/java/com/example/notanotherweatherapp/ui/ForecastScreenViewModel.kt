@@ -68,24 +68,11 @@ class ForecastScreenViewModel @Inject constructor(
             .map { it.clothing ?: Clothing.TEE_SHIRT }
             .toMutableSet()
 
-        var hasRain = false
-        var hasSnow = false
+        if (periodGroups.any { it.weatherDisplay == WeatherDisplay.RAIN })
+            activeClothing.add(Clothing.UMBRELLA)
 
-
-        periodGroups.forEach { group ->
-            // Add precipitation items
-            if (!hasRain || !hasSnow) {
-                group.period.probabilityOfPrecipitation?.value?.let {
-                    if (it > 0) {
-                        if ((group.period.temperature ?: 0) <= FREEZING_POINT) hasSnow = true
-                        else hasRain = true
-                    }
-                }
-            }
-        }
-
-        if (hasRain) activeClothing.add(Clothing.UMBRELLA)
-        if (hasSnow) activeClothing.add(Clothing.SCARF)
+        if (periodGroups.any { it.weatherDisplay == WeatherDisplay.SNOW })
+            activeClothing.add(Clothing.SCARF)
 
         // TODO - Account for wind.
 
