@@ -37,7 +37,7 @@ fun HourlyForecast(periodGroup: PeriodGroup?, modifier: Modifier = Modifier) {
         modifier = modifier
             .height(48.dp)
             .fillMaxWidth()
-            .padding(start = 8.dp, top = 8.dp)
+            .padding(start = 4.dp, top = 4.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

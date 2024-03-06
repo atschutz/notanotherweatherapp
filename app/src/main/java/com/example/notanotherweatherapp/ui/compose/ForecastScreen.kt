@@ -13,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -41,7 +42,7 @@ fun ForecastScreen(currentLocation: LatLng?) {
                 .fillMaxSize()
         ) {
             CircularProgressIndicator(
-                color = MaterialTheme.colorScheme.primary,
+                color = Color.LightGray,
                 modifier = Modifier
                     .size(120.dp)
                     .align(Alignment.Center)
@@ -57,14 +58,14 @@ fun ForecastScreen(currentLocation: LatLng?) {
                 clothing = Clothing.entries,
                 activeClothing = viewModel.activeClothing,
                 modifier = Modifier
-                    .padding(top = 8.dp)
+                    .padding(top = 4.dp)
             )
             Row(modifier = Modifier.weight(1F)) {
                 ForecastInfoBox(
                     period = viewModel.dailyGroups.firstOrNull()?.period,
                     modifier = Modifier
                         .weight(0.67F)
-                        .padding(top = 8.dp, bottom = 8.dp),
+                        .padding(top = 4.dp, bottom = 4.dp),
                 )
                 LazyColumn(modifier = Modifier
                     .fillMaxSize()
@@ -75,7 +76,7 @@ fun ForecastScreen(currentLocation: LatLng?) {
                             periodGroup = group,
                             modifier =
                                 if (index == viewModel.hourlyGroups.lastIndex) {
-                                    Modifier.padding(bottom = 8.dp)
+                                    Modifier.padding(bottom = 4.dp)
                                 } else Modifier
                         )
                     }

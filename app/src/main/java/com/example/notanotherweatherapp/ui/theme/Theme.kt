@@ -45,8 +45,8 @@ fun NotAnotherWeatherAppTheme(
     content: @Composable () -> Unit
 ) {
     val colorScheme = ColorScheme(
-        primary = Color(0xFF6E7075),
-        onPrimary = Color.White,
+        primary = Color(0xFF393B41),
+        onPrimary = Color.Black,
         primaryContainer = Color(0xFFF5FF78),
         onPrimaryContainer = Color.White,
         inversePrimary = Color(0xFFBB86FC),

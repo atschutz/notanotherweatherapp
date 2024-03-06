@@ -45,7 +45,7 @@ fun ClothingRow(clothing: List<Clothing>, activeClothing: Set<Clothing>, modifie
                         modifier = Modifier
                             .padding(vertical = 8.dp)
                             .background(Color.Gray)
-                            .width(1.dp)
+                            .width(0.5.dp)
                             .fillMaxSize()
                     )
                 }
@@ -62,7 +62,7 @@ fun ClothingRow(clothing: List<Clothing>, activeClothing: Set<Clothing>, modifie
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(1.dp)
+            .height(0.5.dp)
             .background(Color.Gray)
     )
 }

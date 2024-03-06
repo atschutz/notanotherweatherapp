@@ -33,15 +33,14 @@ fun CurrentForecast(periodGroup: PeriodGroup?, locationString: String) {
         colors = CardDefaults.cardColors(containerColor = Color.LightGray),
         elevation = CardDefaults.cardElevation(4.dp),
         modifier = Modifier
-            .height(220.dp)
+            .height(200.dp)
             .fillMaxWidth()
-            .padding(top = 12.dp, end = 12.dp)
+            .padding(end = 4.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
-                .height(220.dp)
                 .fillMaxWidth()
                 .padding(8.dp)
         ) {
