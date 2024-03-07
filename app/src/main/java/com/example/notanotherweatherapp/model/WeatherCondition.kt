@@ -97,6 +97,15 @@ enum class WeatherCondition(
             "gust",
         ),
     ),
+    FOG(
+        displayName = "Fog",
+        iconId = R.drawable.ic_fog,
+        isForDay = null,
+        conditionType = ConditionType.ADVISORY,
+        conditionKeywords = listOf(
+            "fog",
+        ),
+    ),
 }
 
 enum class ConditionType {

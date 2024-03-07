@@ -1,9 +1,12 @@
 package com.example.notanotherweatherapp.ui.compose
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,6 +24,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.notanotherweatherapp.R
 import com.example.notanotherweatherapp.model.Clothing
 import com.example.notanotherweatherapp.ui.ForecastScreenViewModel
+import com.example.notanotherweatherapp.ui.compose.dailyforecast.DAILY_ROW_HEIGHT
 import com.example.notanotherweatherapp.ui.compose.dailyforecast.DailyForecastRow
 import com.google.android.gms.maps.model.LatLng
 
@@ -39,18 +43,23 @@ fun ForecastScreen(currentLocation: LatLng?) {
         )
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        if (viewModel.cityString.isEmpty() || viewModel.hourlyGroups.isEmpty()) {
+    if (viewModel.cityString.isEmpty() || viewModel.hourlyGroups.isEmpty()) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
             CircularProgressIndicator(
                 color = Color.LightGray,
                 modifier = Modifier
                     .size(120.dp)
                     .align(Alignment.Center)
             )
-        } else {
+        }
+    } else {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_settings),
                 contentDescription = "Settings icon",
@@ -75,12 +84,17 @@ fun ForecastScreen(currentLocation: LatLng?) {
                         .padding(top = 4.dp)
                 )
                 Row(modifier = Modifier.weight(1F)) {
-                    ForecastInfoBox(
-                        period = viewModel.dailyGroups.firstOrNull()?.period,
+                    Column(
                         modifier = Modifier
                             .weight(0.67F)
-                            .padding(top = 4.dp, bottom = 4.dp),
-                    )
+                            .padding(top = 4.dp, bottom = 4.dp)
+                    ) {
+                        CurrentForecastInfoBox(
+                            period = viewModel.dailyGroups.firstOrNull()?.period,
+                            modifier = Modifier.weight(1F)
+                        )
+                        DailyRowSpacer()
+                    }
                     LazyColumn(modifier = Modifier
                         .fillMaxSize()
                         .weight(0.33F)
@@ -94,10 +108,28 @@ fun ForecastScreen(currentLocation: LatLng?) {
                                     } else Modifier
                             )
                         }
+                        item {
+                            DailyRowSpacer()
+                        }
                     }
                 }
-                DailyForecastRow(dailyGroups = viewModel.dailyGroups)
             }
+            DailyForecastRow(
+                dailyGroups = viewModel.dailyGroups,
+                modifier = Modifier.align(Alignment.BottomCenter)
+            )
         }
     }
+}
+
+@Composable
+fun DailyRowSpacer() {
+    // Account for daily row, which overlaps this Composable so it can
+    // scroll underneath.
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(DAILY_ROW_HEIGHT.dp)
+            .background(Color.Transparent)
+    )
 }

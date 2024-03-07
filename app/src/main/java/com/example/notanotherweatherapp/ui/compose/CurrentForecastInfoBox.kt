@@ -3,6 +3,7 @@ package com.example.notanotherweatherapp.ui.compose
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -17,23 +18,32 @@ import com.example.notanotherweatherapp.TEST_PERIOD
 import com.example.notanotherweatherapp.model.Period
 
 @Composable
-fun ForecastInfoBox(period: Period?, modifier: Modifier = Modifier) {
+fun CurrentForecastInfoBox(period: Period?, modifier: Modifier = Modifier) {
     Card(
         shape = RoundedCornerShape(topEnd = 24.dp, bottomEnd = 24.dp),
         colors = CardDefaults.cardColors(containerColor = Color.LightGray),
         elevation = CardDefaults.cardElevation(4.dp),
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize()
     ) {
-        Column(
-            modifier = Modifier
+        LazyColumn(
+            modifier = modifier
                 .fillMaxSize()
-                .padding(12.dp)
         ) {
-            Text(
-                text = period?.detailedForecast ?: "",
-                style = MaterialTheme.typography.bodyLarge
-            )
+            item {
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(12.dp)
+                ) {
+                    Text(
+                        text = period?.detailedForecast ?: "",
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                }
+                DailyRowSpacer()
+            }
         }
     }
 }
@@ -41,5 +51,5 @@ fun ForecastInfoBox(period: Period?, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun ForecastInfoBoxPreview() {
-    ForecastInfoBox(period = TEST_PERIOD, Modifier)
+    CurrentForecastInfoBox(period = TEST_PERIOD, Modifier)
 }

@@ -16,7 +16,6 @@ import androidx.compose.ui.unit.dp
 import com.example.notanotherweatherapp.R
 import com.example.notanotherweatherapp.model.ConditionType
 import com.example.notanotherweatherapp.model.PeriodGroup
-import com.example.notanotherweatherapp.ui.ForecastScreenViewModel.Companion.PRECIPITATION_THRESHOLD
 
 @Composable
 fun DailyForecastItemColumn(periodGroup: PeriodGroup, modifier: Modifier = Modifier) {
