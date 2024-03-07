@@ -51,6 +51,6 @@ data class RelativeHumidity(
 
 data class PeriodGroup(
     val period: Period,
-    val weatherDisplay: WeatherDisplay?,
+    val weatherCondition: WeatherCondition?,
     val clothing: Clothing?,
 )

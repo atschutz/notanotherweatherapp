@@ -72,10 +72,10 @@ fun CurrentForecast(periodGroup: PeriodGroup?, locationString: String) {
                 Image(
                     painter =
                         painterResource(
-                            id = periodGroup?.weatherDisplay?.iconId ?: R.drawable.ic_question_mark
+                            id = periodGroup?.weatherCondition?.iconId ?: R.drawable.ic_question_mark
                         ),
                     contentDescription =
-                        "${periodGroup?.weatherDisplay?.displayName ?: "Weather"} icon",
+                        "${periodGroup?.weatherCondition?.displayName ?: "Weather"} icon",
                     contentScale = ContentScale.FillHeight,
                 )
             }

@@ -2,18 +2,20 @@ package com.example.notanotherweatherapp.model
 
 import com.example.notanotherweatherapp.R
 
-enum class WeatherDisplay(
+enum class WeatherCondition(
     val displayName: String,
     val iconId: Int,
     val isForDay: Boolean?,
+    val conditionType: ConditionType,
     // TODO - Enum this or something idk
-    val conditions: List<String>,
+    val conditionKeywords: List<String>,
 ) {
     CLEAR_DAY(
         displayName = "Clear day",
         iconId = R.drawable.ic_clear_day,
         isForDay = true,
-        conditions = listOf(
+        conditionType = ConditionType.GENERAL,
+        conditionKeywords = listOf(
             "sunny",
             "clear",
         ),
@@ -22,7 +24,8 @@ enum class WeatherDisplay(
         displayName = "Clear night",
         iconId = R.drawable.ic_clear_night,
         isForDay = false,
-        conditions = listOf(
+        conditionType = ConditionType.GENERAL,
+        conditionKeywords = listOf(
             "clear",
         ),
     ),
@@ -30,7 +33,8 @@ enum class WeatherDisplay(
         displayName = "Partly cloudy day",
         iconId = R.drawable.ic_partly_cloudy_day,
         isForDay = true,
-        conditions = listOf(
+        conditionType = ConditionType.GENERAL,
+        conditionKeywords = listOf(
             "partly cloudy",
         ),
     ),
@@ -38,7 +42,8 @@ enum class WeatherDisplay(
         displayName = "Partly cloudy night",
         iconId = R.drawable.ic_partly_cloudy_night,
         isForDay = false,
-        conditions = listOf(
+        conditionType = ConditionType.GENERAL,
+        conditionKeywords = listOf(
             "partly cloudy",
         ),
     ),
@@ -46,7 +51,8 @@ enum class WeatherDisplay(
         displayName = "Cloudy",
         iconId = R.drawable.ic_cloudy,
         isForDay = null,
-        conditions = listOf(
+        conditionType = ConditionType.GENERAL,
+        conditionKeywords = listOf(
             "mostly cloudy",
             "cloudy",
         ),
@@ -55,7 +61,8 @@ enum class WeatherDisplay(
         displayName = "Rain",
         iconId = R.drawable.ic_rain,
         isForDay = null,
-        conditions = listOf(
+        conditionType = ConditionType.PRECIPITATION,
+        conditionKeywords = listOf(
             "rain",
             "showers",
         ),
@@ -64,7 +71,8 @@ enum class WeatherDisplay(
         displayName = "Thunderstorm",
         iconId = R.drawable.ic_thunderstorm,
         isForDay = null,
-        conditions = listOf(
+        conditionType = ConditionType.PRECIPITATION,
+        conditionKeywords = listOf(
             "thunder",
             "storm",
         ),
@@ -73,8 +81,26 @@ enum class WeatherDisplay(
         displayName = "Snow",
         iconId = R.drawable.ic_snow,
         isForDay = null,
-        conditions = listOf(
+        conditionType = ConditionType.PRECIPITATION,
+        conditionKeywords = listOf(
             "snow",
         ),
     ),
+    WIND(
+        displayName = "Wind",
+        iconId = R.drawable.ic_wind,
+        isForDay = null,
+        conditionType = ConditionType.ADVISORY,
+        conditionKeywords = listOf(
+            "wind",
+            "windy",
+            "gust",
+        ),
+    ),
+}
+
+enum class ConditionType {
+    PRECIPITATION,
+    ADVISORY,
+    GENERAL,
 }

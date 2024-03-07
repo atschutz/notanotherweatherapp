@@ -12,7 +12,7 @@ import com.example.notanotherweatherapp.model.Clothing
 import com.example.notanotherweatherapp.model.ForecastRepository
 import com.example.notanotherweatherapp.model.PeriodGroup
 import com.example.notanotherweatherapp.model.Period
-import com.example.notanotherweatherapp.model.WeatherDisplay
+import com.example.notanotherweatherapp.model.WeatherCondition
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -48,7 +48,7 @@ class ForecastScreenViewModel @Inject constructor(
                     .map {
                         PeriodGroup(
                             period = it,
-                            weatherDisplay = getWeatherDisplay(it),
+                            weatherCondition = getWeatherDisplay(it),
                             clothing = null,
                         )
                     }
@@ -68,10 +68,10 @@ class ForecastScreenViewModel @Inject constructor(
             .map { it.clothing ?: Clothing.TEE_SHIRT }
             .toMutableSet()
 
-        if (periodGroups.any { it.weatherDisplay == WeatherDisplay.RAIN })
+        if (periodGroups.any { it.weatherCondition == WeatherCondition.RAIN })
             activeClothing.add(Clothing.UMBRELLA)
 
-        if (periodGroups.any { it.weatherDisplay == WeatherDisplay.SNOW })
+        if (periodGroups.any { it.weatherCondition == WeatherCondition.SNOW })
             activeClothing.add(Clothing.SCARF)
 
         // TODO - Account for wind.
@@ -93,15 +93,15 @@ class ForecastScreenViewModel @Inject constructor(
             val group = PeriodGroup(
                 period = period,
                 clothing = clothing,
-                weatherDisplay = getWeatherDisplay(period)
+                weatherCondition = getWeatherDisplay(period)
             )
             Log.d("-as-", "$group")
             group
         }
 
-    private fun getWeatherDisplay(period: Period): WeatherDisplay? {
-        for (weatherDisplayItem in WeatherDisplay.entries) {
-            if (weatherDisplayItem.conditions
+    private fun getWeatherDisplay(period: Period): WeatherCondition? {
+        for (weatherDisplayItem in WeatherCondition.entries) {
+            if (weatherDisplayItem.conditionKeywords
                     .any {
                         (period.shortForecast ?: "").contains(it, ignoreCase = true) &&
                                 (weatherDisplayItem.isForDay == null ||
@@ -124,7 +124,6 @@ class ForecastScreenViewModel @Inject constructor(
     }
 
     companion object {
-        const val FREEZING_POINT = 32
         const val HOURLY_ITEM_LIMIT = 24
     }
 }

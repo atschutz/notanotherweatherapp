@@ -6,7 +6,7 @@ import com.example.notanotherweatherapp.model.PeriodGroup
 import com.example.notanotherweatherapp.model.Period
 import com.example.notanotherweatherapp.model.ProbabilityOfPrecipitation
 import com.example.notanotherweatherapp.model.RelativeHumidity
-import com.example.notanotherweatherapp.model.WeatherDisplay
+import com.example.notanotherweatherapp.model.WeatherCondition
 
 val TEST_PROBABILITY_OF_PRECIPITATION =
     ProbabilityOfPrecipitation("wmoUnit:percent", 30.0)
@@ -37,7 +37,7 @@ val TEST_PERIOD = Period(
 val TEST_HOURLY_GROUP = PeriodGroup(
     period = TEST_PERIOD,
     clothing = Clothing.TEE_SHIRT,
-    weatherDisplay = WeatherDisplay.CLEAR_DAY,
+    weatherCondition = WeatherCondition.CLEAR_DAY,
 )
 
 val TEST_CLOTHING_MAP = mapOf(
