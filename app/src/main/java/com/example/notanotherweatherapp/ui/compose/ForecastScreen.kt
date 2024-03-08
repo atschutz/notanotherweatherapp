@@ -78,14 +78,13 @@ fun ForecastScreen(currentLocation: LatLng?) {
                     .fillMaxSize()
             ) {
                 CurrentForecast(
-                    periodGroup = viewModel.hourlyGroups.firstOrNull(),
+                    periodGroup = viewModel.hourlyGroups.first(),
                     locationString = viewModel.cityString,
                 )
                 ClothingRow(
                     clothing = Clothing.entries,
-                    activeClothing = viewModel.activeClothing,
-                    modifier = Modifier
-                        .padding(top = 4.dp)
+                    activeClothing = viewModel.activeClothing.value,
+                    modifier = Modifier.padding(top = 4.dp)
                 )
                 Row(modifier = Modifier.weight(1F)) {
                     Column(
@@ -98,6 +97,7 @@ fun ForecastScreen(currentLocation: LatLng?) {
                             CurrentForecastInfoBox(
                                 period = it,
                                 clothingChanges = viewModel.clothingChanges,
+                                accessoryChanges = viewModel.accessoryChanges,
                                 modifier = Modifier.weight(1F)
                             )
                         }

@@ -1,8 +1,11 @@
 package com.example.notanotherweatherapp.ui.compose.currentforecast
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -24,7 +27,12 @@ import java.time.LocalDate
 import kotlin.math.roundToInt
 
 @Composable
-fun CurrentForecastInfoBox(period: Period, clothingChanges: List<ClothingChange>, modifier: Modifier = Modifier) {
+fun CurrentForecastInfoBox(
+    period: Period,
+    clothingChanges: List<ClothingChange>,
+    accessoryChanges: List<ClothingChange>,
+    modifier: Modifier = Modifier
+) {
     Card(
         shape = RoundedCornerShape(topEnd = 24.dp, bottomEnd = 24.dp),
         colors = CardDefaults.cardColors(containerColor = Color.LightGray),
@@ -42,7 +50,21 @@ fun CurrentForecastInfoBox(period: Period, clothingChanges: List<ClothingChange>
         ) {
             item { Box(modifier = Modifier.padding(top = 8.dp)) }
             items(clothingChanges) {
-                ClothingChangeLine(it)
+                ClothingChangeLine(clothingChange = it)
+            }
+            if (accessoryChanges.isNotEmpty()) {
+                item {
+                    Box(
+                        modifier = Modifier
+                            .padding(start = 12.dp, end = 12.dp, top = 4.dp, bottom = 8.dp)
+                            .fillMaxWidth()
+                            .height(1.dp)
+                            .background(Color.Gray)
+                    )
+                }
+                items(accessoryChanges) {
+                    ClothingChangeLine(clothingChange = it)
+                }
             }
             item {
                 val date = LocalDate.now()
@@ -107,6 +129,7 @@ fun ForecastInfoBoxPreview() {
     CurrentForecastInfoBox(
         period = TEST_PERIOD,
         clothingChanges = TEST_CLOTHING_CHANGES,
+        accessoryChanges = TEST_CLOTHING_CHANGES,
         modifier = Modifier
     )
 }

@@ -23,7 +23,7 @@ fun DailyInfoColumn(
             fontWeight = FontWeight.Bold
         )
         Text(
-            text = periodGroup.period.detailedForecast ?: "",
+            text = periodGroup.period.detailedForecast,
             style = MaterialTheme.typography.bodySmall
         )
     }

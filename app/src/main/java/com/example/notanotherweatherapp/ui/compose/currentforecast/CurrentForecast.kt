@@ -27,7 +27,7 @@ import com.example.notanotherweatherapp.TEST_HOURLY_GROUP
 import com.example.notanotherweatherapp.model.PeriodGroup
 
 @Composable
-fun CurrentForecast(periodGroup: PeriodGroup?, locationString: String) {
+fun CurrentForecast(periodGroup: PeriodGroup, locationString: String) {
     Card(
         shape = RoundedCornerShape(topStart = 0.dp, bottomStart = 0.dp, topEnd = 100.dp, bottomEnd = 100.dp),
         colors = CardDefaults.cardColors(containerColor = Color.LightGray),
@@ -56,11 +56,11 @@ fun CurrentForecast(periodGroup: PeriodGroup?, locationString: String) {
                     style = MaterialTheme.typography.titleSmall,
                 )
                 Text(
-                    text = "${periodGroup?.period?.temperature ?: ""}°",
+                    text = "${periodGroup.period.temperature}°",
                     style = MaterialTheme.typography.titleLarge
                 )
                 Text(
-                    text = periodGroup?.period?.shortForecast ?: "",
+                    text = periodGroup.period.shortForecast,
                     style = MaterialTheme.typography.titleSmall,
                 )
             }
@@ -72,10 +72,10 @@ fun CurrentForecast(periodGroup: PeriodGroup?, locationString: String) {
                 Image(
                     painter =
                         painterResource(
-                            id = periodGroup?.weatherCondition?.iconId ?: R.drawable.ic_question_mark
+                            id = periodGroup.weatherCondition.iconId
                         ),
                     contentDescription =
-                        "${periodGroup?.weatherCondition?.displayName ?: "Weather"} icon",
+                        "${periodGroup.weatherCondition.displayName} icon",
                     contentScale = ContentScale.FillHeight,
                 )
             }

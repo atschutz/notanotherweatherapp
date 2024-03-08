@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import com.example.notanotherweatherapp.TEST_HOURLY_GROUP
 import com.example.notanotherweatherapp.model.PeriodGroup
 
-// TODO - Overlap hourly list.
 const val DAILY_ROW_HEIGHT = 120
 
 @Composable
@@ -66,7 +65,7 @@ fun DailyForecastRow(dailyGroups: List<PeriodGroup>, modifier: Modifier = Modifi
 
 fun getChunkedPeriodGroups(periodGroups: List<PeriodGroup>): List<List<PeriodGroup>> =
     if (periodGroups.isNotEmpty()) {
-        if (periodGroups[0].period.isDaytime == true) {
+        if (periodGroups[0].period.isDaytime) {
             // Do nothing.
             periodGroups.chunked(2)
         } else {

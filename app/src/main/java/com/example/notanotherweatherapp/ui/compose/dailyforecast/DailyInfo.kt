@@ -36,7 +36,7 @@ fun DailyInfo(
             // TODO - Get out of lazy column and add swipe to toggle today/tonight.
             Row(
                 modifier = Modifier
-                    .padding(4.dp)
+                    .padding(8.dp)
             ) {
                 if (chunkedPeriods.isNotEmpty() && chunkedPeriods[selectedIndex].size > 1) {
                     DailyInfoColumn(
@@ -46,13 +46,14 @@ fun DailyInfo(
                             .weight(1f)
                             .padding(end = 12.dp),
                     )
+                } else {
+                    DailyInfoColumn(
+                        periodGroup = chunkedPeriods[selectedIndex].last(),
+                        labelText = "Tonight",
+                        modifier = Modifier
+                            .weight(1f)
+                    )
                 }
-                DailyInfoColumn(
-                    periodGroup = chunkedPeriods[selectedIndex].last(),
-                    labelText = "Tonight",
-                    modifier = Modifier
-                        .weight(1f)
-                )
             }
         }
     }

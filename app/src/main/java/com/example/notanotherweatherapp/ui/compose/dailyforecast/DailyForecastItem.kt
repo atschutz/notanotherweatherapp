@@ -53,17 +53,15 @@ fun DailyForecastItem(
                 onClick()
             }
     ) {
-        dayGroup.period.name?.let {
-            Text(
-                text =
-                if (dayGroup.period.number == 1) {
-                    if (dayGroup.period.isDaytime == true) "Today"
-                    else "Tonight"
-                } else it.safeSlice(0..2),
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Medium,
-            )
-        }
+        Text(
+            text =
+            if (dayGroup.period.number == 1) {
+                if (dayGroup.period.isDaytime) "Today"
+                else "Tonight"
+            } else dayGroup.period.name.safeSlice(0..2),
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Medium,
+        )
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically,

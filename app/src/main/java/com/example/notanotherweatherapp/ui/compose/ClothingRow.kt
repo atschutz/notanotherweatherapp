@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.example.notanotherweatherapp.model.Clothing
 
 @Composable
-fun ClothingRow(clothing: List<Clothing>, activeClothing: Set<Clothing>, modifier: Modifier = Modifier) {
+fun ClothingRow(clothing: List<Clothing>, activeClothing: List<Clothing>, modifier: Modifier = Modifier) {
     Card(
         shape = RectangleShape,
         colors = CardDefaults.cardColors(containerColor = Color.LightGray),
@@ -72,7 +72,7 @@ fun ClothingRow(clothing: List<Clothing>, activeClothing: Set<Clothing>, modifie
 fun ClothingRowPreview() {
     ClothingRow(
         clothing = Clothing.entries,
-        activeClothing = setOf(
+        activeClothing = listOf(
             Clothing.TEE_SHIRT,
             Clothing.SWEATSHIRT,
             Clothing.UMBRELLA,

@@ -5,8 +5,8 @@ data class LocationResponse(
 )
 
 data class LocationProperties(
-    val forecast: String?,
-    val forecastHourly: String?,
+    val forecast: String = "",
+    val forecastHourly: String = "",
 )
 
 data class ForecastResponse(
@@ -18,20 +18,23 @@ data class ForecastProperties(
 )
 
 data class Period(
-    val number: Int?,
-    val name: String?,
-    val startTime: String?,
-    val endTime: String?,
-    val isDaytime: Boolean?,
-    val temperature: Int?,
-    val probabilityOfPrecipitation: ProbabilityOfPrecipitation?,
-    val dewpoint: Dewpoint,
-    val relativeHumidity: RelativeHumidity?,
-    val windSpeed: String?,
-    val windDirection: String?,
-    val icon: String?,
-    val shortForecast: String?,
-    val detailedForecast: String?,
+    val number: Int = 0,
+    val name: String = "",
+    val startTime: String = "",
+    val endTime: String = "",
+    val isDaytime: Boolean = true,
+    val temperature: Int = 0,
+    val probabilityOfPrecipitation: ProbabilityOfPrecipitation =
+        ProbabilityOfPrecipitation("", 0.0),
+    val dewpoint: Dewpoint =
+        Dewpoint("", 0.0),
+    val relativeHumidity: RelativeHumidity =
+        RelativeHumidity("", 0.0),
+    val windSpeed: String = "",
+    val windDirection: String = "",
+    val icon: String = "",
+    val shortForecast: String = "",
+    val detailedForecast: String = "",
 )
 
 data class ProbabilityOfPrecipitation(
@@ -51,12 +54,12 @@ data class RelativeHumidity(
 
 data class PeriodGroup(
     val period: Period,
-    val weatherCondition: WeatherCondition?,
-    val clothing: Clothing?,
+    val weatherCondition: WeatherCondition,
+    val clothing: Clothing
 )
 
 data class ClothingChange(
     val clothing: Clothing,
     val time: String,
-    val temperature: Int?,
+    val temperature: Int,
 )

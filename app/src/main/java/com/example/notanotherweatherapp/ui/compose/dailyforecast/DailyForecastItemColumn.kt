@@ -30,7 +30,7 @@ fun DailyForecastItemColumn(periodGroup: PeriodGroup, modifier: Modifier = Modif
         )
         Image(
             painter = painterResource(
-                id = periodGroup.weatherCondition?.iconId ?: R.drawable.ic_question_mark
+                id = periodGroup.weatherCondition.iconId ?: R.drawable.ic_question_mark
             ),
             contentDescription = "${periodGroup.period.shortForecast} icon",
             contentScale = ContentScale.Fit,
@@ -39,8 +39,8 @@ fun DailyForecastItemColumn(periodGroup: PeriodGroup, modifier: Modifier = Modif
         )
         Text(
             text =
-                if (periodGroup.weatherCondition?.conditionType == ConditionType.PRECIPITATION)
-                    "${(periodGroup.period.probabilityOfPrecipitation?.value ?: 0.0).toInt()}%"
+                if (periodGroup.weatherCondition.conditionType == ConditionType.PRECIPITATION)
+                    "${(periodGroup.period.probabilityOfPrecipitation.value).toInt()}%"
                 else "",
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodySmall,
