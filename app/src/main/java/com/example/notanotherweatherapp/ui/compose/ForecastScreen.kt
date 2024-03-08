@@ -25,6 +25,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.notanotherweatherapp.R
 import com.example.notanotherweatherapp.model.Clothing
 import com.example.notanotherweatherapp.ui.ForecastScreenViewModel
+import com.example.notanotherweatherapp.ui.compose.currentforecast.CurrentForecast
 import com.example.notanotherweatherapp.ui.compose.currentforecast.CurrentForecastInfoBox
 import com.example.notanotherweatherapp.ui.compose.dailyforecast.DAILY_ROW_HEIGHT
 import com.example.notanotherweatherapp.ui.compose.dailyforecast.DailyForecastRow
@@ -96,6 +97,7 @@ fun ForecastScreen(currentLocation: LatLng?) {
                         viewModel.hourlyGroups.firstOrNull()?.period?.let {
                             CurrentForecastInfoBox(
                                 period = it,
+                                clothingChanges = viewModel.clothingChanges,
                                 modifier = Modifier.weight(1F)
                             )
                         }

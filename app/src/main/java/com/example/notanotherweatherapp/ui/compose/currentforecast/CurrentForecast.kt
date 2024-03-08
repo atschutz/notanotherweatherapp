@@ -1,4 +1,4 @@
-package com.example.notanotherweatherapp.ui.compose
+package com.example.notanotherweatherapp.ui.compose.currentforecast
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

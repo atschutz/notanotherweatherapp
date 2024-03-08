@@ -3,7 +3,9 @@ package com.example.notanotherweatherapp.ui.compose.currentforecast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -31,7 +33,7 @@ fun CurrentForecastInfoItem(
 ) {
     Box(
         modifier = modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .padding(4.dp)
             .background(
                 color = Color.Gray,
@@ -43,6 +45,7 @@ fun CurrentForecastInfoItem(
                 )
             )
             .padding(8.dp)
+            .aspectRatio(1F)
     ) {
         Text(
             text = title,

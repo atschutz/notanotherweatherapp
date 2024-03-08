@@ -54,3 +54,9 @@ data class PeriodGroup(
     val weatherCondition: WeatherCondition?,
     val clothing: Clothing?,
 )
+
+data class ClothingChange(
+    val clothing: Clothing,
+    val time: String,
+    val temperature: Int?,
+)

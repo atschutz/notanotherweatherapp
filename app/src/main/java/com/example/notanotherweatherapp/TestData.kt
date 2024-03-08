@@ -1,6 +1,7 @@
 package com.example.notanotherweatherapp
 
 import com.example.notanotherweatherapp.model.Clothing
+import com.example.notanotherweatherapp.model.ClothingChange
 import com.example.notanotherweatherapp.model.Dewpoint
 import com.example.notanotherweatherapp.model.PeriodGroup
 import com.example.notanotherweatherapp.model.Period
@@ -40,13 +41,17 @@ val TEST_HOURLY_GROUP = PeriodGroup(
     weatherCondition = WeatherCondition.CLEAR_DAY,
 )
 
-val TEST_CLOTHING_MAP = mapOf(
-    "Gloves" to R.drawable.ic_sunny,
-    "Boots" to R.drawable.ic_sunny,
-    "Short sleeve shirt" to R.drawable.ic_sunny,
-    "Long Sleeve shirt" to R.drawable.ic_sunny,
-    "Shorts" to R.drawable.ic_sunny,
-    "Pants" to R.drawable.ic_sunny,
-    "Jacket" to R.drawable.ic_sunny,
-    "Umbrella" to R.drawable.ic_sunny,
+val TEST_CLOTHING_CHANGE =
+    ClothingChange(
+        clothing = Clothing.SCARF,
+        time = "8pm",
+        temperature = 76,
+    )
+
+val TEST_CLOTHING_CHANGES = listOf(
+    TEST_CLOTHING_CHANGE,
+    TEST_CLOTHING_CHANGE,
+    TEST_CLOTHING_CHANGE,
+    TEST_CLOTHING_CHANGE,
+    TEST_CLOTHING_CHANGE,
 )
