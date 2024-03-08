@@ -90,6 +90,7 @@ class ForecastScreenViewModel @Inject constructor(
                 }
             }
 
+            // TODO Check precipitation chance because sometimes they say "slight chance".
             val group = PeriodGroup(
                 period = period,
                 clothing = clothing,

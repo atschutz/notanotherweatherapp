@@ -35,16 +35,16 @@ fun DailyForecastItem(
             .background(
                 color = Color.Gray,
                 shape = RoundedCornerShape(
-                    topStart = 9.dp,
-                    topEnd = 9.dp
+                    topStart = 16.25.dp,
+                    topEnd = 16.25.dp
                 )
             )
-            .padding(top = 1.dp, start = 0.5.dp, end = 0.5.dp)
+            .padding(top = 1.dp, start = 0.25.dp, end = 0.25.dp)
             .background(
                 color = if (index == selectedIndex) Color.Gray else Color.LightGray,
                 shape = RoundedCornerShape(
-                    topStart = 8.dp,
-                    topEnd = 8.dp,
+                    topStart = 16.dp,
+                    topEnd = 16.dp,
                     bottomStart = if (selectedIndex == index - 1) 8.dp else 0.dp,
                     bottomEnd = if (selectedIndex == index + 1) 8.dp else 0.dp,
                 )

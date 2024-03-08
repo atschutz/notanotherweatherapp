@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -24,6 +25,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.notanotherweatherapp.R
 import com.example.notanotherweatherapp.model.Clothing
 import com.example.notanotherweatherapp.ui.ForecastScreenViewModel
+import com.example.notanotherweatherapp.ui.compose.currentforecast.CurrentForecastInfoBox
 import com.example.notanotherweatherapp.ui.compose.dailyforecast.DAILY_ROW_HEIGHT
 import com.example.notanotherweatherapp.ui.compose.dailyforecast.DailyForecastRow
 import com.google.android.gms.maps.model.LatLng
@@ -33,6 +35,7 @@ fun ForecastScreen(currentLocation: LatLng?) {
     val viewModel: ForecastScreenViewModel = viewModel()
     val context = LocalContext.current
 
+    // TODO - Use flow.
     if (currentLocation != null &&
         (viewModel.hourlyGroups.isEmpty() || viewModel.cityString.isEmpty())
     ) {
@@ -86,14 +89,16 @@ fun ForecastScreen(currentLocation: LatLng?) {
                 Row(modifier = Modifier.weight(1F)) {
                     Column(
                         modifier = Modifier
+                            .fillMaxHeight()
                             .weight(0.67F)
                             .padding(top = 4.dp, bottom = 4.dp)
                     ) {
-                        CurrentForecastInfoBox(
-                            period = viewModel.dailyGroups.firstOrNull()?.period,
-                            modifier = Modifier.weight(1F)
-                        )
-                        DailyRowSpacer()
+                        viewModel.hourlyGroups.firstOrNull()?.period?.let {
+                            CurrentForecastInfoBox(
+                                period = it,
+                                modifier = Modifier.weight(1F)
+                            )
+                        }
                     }
                     LazyColumn(modifier = Modifier
                         .fillMaxSize()
