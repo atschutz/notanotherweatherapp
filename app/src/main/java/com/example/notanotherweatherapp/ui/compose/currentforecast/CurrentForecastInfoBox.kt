@@ -1,5 +1,6 @@
 package com.example.notanotherweatherapp.ui.compose.currentforecast
 
+import CurrentForecastDate
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -34,7 +35,7 @@ fun CurrentForecastInfoBox(
     modifier: Modifier = Modifier
 ) {
     Card(
-        shape = RoundedCornerShape(topEnd = 24.dp, bottomEnd = 24.dp),
+        shape = RoundedCornerShape(topEnd = 16.dp, bottomEnd = 16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.LightGray),
         elevation = CardDefaults.cardElevation(4.dp),
         modifier = Modifier
@@ -48,7 +49,11 @@ fun CurrentForecastInfoBox(
                     horizontal = 4.dp,
                 )
         ) {
-            item { Box(modifier = Modifier.padding(top = 8.dp)) }
+            item {
+                CurrentForecastDate(
+                    modifier = modifier.padding(8.dp)
+                )
+            }
             items(clothingChanges) {
                 ClothingChangeLine(clothingChange = it)
             }

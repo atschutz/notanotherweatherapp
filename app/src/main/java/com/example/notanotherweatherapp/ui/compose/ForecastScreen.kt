@@ -15,6 +15,10 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,19 +26,25 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.notanotherweatherapp.PreferenceManager
 import com.example.notanotherweatherapp.R
 import com.example.notanotherweatherapp.model.Clothing
+import com.example.notanotherweatherapp.noRippleClickable
 import com.example.notanotherweatherapp.ui.ForecastScreenViewModel
 import com.example.notanotherweatherapp.ui.compose.currentforecast.CurrentForecast
 import com.example.notanotherweatherapp.ui.compose.currentforecast.CurrentForecastInfoBox
 import com.example.notanotherweatherapp.ui.compose.dailyforecast.DAILY_ROW_HEIGHT
 import com.example.notanotherweatherapp.ui.compose.dailyforecast.DailyForecastRow
+import com.example.notanotherweatherapp.ui.compose.settings.SettingsMenu
 import com.google.android.gms.maps.model.LatLng
 
 @Composable
 fun ForecastScreen(currentLocation: LatLng?) {
     val viewModel: ForecastScreenViewModel = viewModel()
     val context = LocalContext.current
+
+    val preferenceManager = remember { PreferenceManager(context) }
+    var showSettings by remember { mutableStateOf(false) }
 
     // TODO - Use flow.
     if (currentLocation != null &&
@@ -65,13 +75,14 @@ fun ForecastScreen(currentLocation: LatLng?) {
                 .fillMaxSize()
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.ic_settings),
+                painter = painterResource(R.drawable.ic_settings),
                 contentDescription = "Settings icon",
                 tint = Color.Gray,
                 modifier = Modifier
-                    .padding(end = 8.dp, top = 8.dp)
+                    .padding(end = 8.dp, top = 4.dp)
                     .size(16.dp)
                     .align(Alignment.TopEnd)
+                    .noRippleClickable { showSettings = true }
             )
             Column(
                 modifier = Modifier
@@ -125,6 +136,14 @@ fun ForecastScreen(currentLocation: LatLng?) {
                 dailyGroups = viewModel.dailyGroups,
                 modifier = Modifier.align(Alignment.BottomCenter)
             )
+            if (showSettings) {
+                SettingsMenu(
+                    preferenceManager = preferenceManager,
+                    modifier = Modifier.align(Alignment.TopEnd)
+                ) {
+                    showSettings = false
+                }
+            }
         }
     }
 }

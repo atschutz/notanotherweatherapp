@@ -5,6 +5,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
+import kotlin.Unit
 
 fun getTimeFromDateString(date: String): String {
     val hours = date.safeSlice(11..12).toInt()
@@ -26,3 +27,7 @@ fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier = composed {
         onClick()
     }
 }
+
+fun fahrenheitToCelsius(f: Double) = (5 / 9) * (f - 32)
+
+fun celsiusToFahrenheit(c: Double) =  (9 / 5 * c) + 32

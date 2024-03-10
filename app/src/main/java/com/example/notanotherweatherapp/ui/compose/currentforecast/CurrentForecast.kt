@@ -5,10 +5,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -22,7 +21,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.notanotherweatherapp.R
 import com.example.notanotherweatherapp.TEST_HOURLY_GROUP
 import com.example.notanotherweatherapp.model.PeriodGroup
 
@@ -33,7 +31,6 @@ fun CurrentForecast(periodGroup: PeriodGroup, locationString: String) {
         colors = CardDefaults.cardColors(containerColor = Color.LightGray),
         elevation = CardDefaults.cardElevation(4.dp),
         modifier = Modifier
-            .height(200.dp)
             .fillMaxWidth()
             .padding(end = 4.dp)
     ) {
@@ -67,7 +64,6 @@ fun CurrentForecast(periodGroup: PeriodGroup, locationString: String) {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .fillMaxHeight()
             ) {
                 Image(
                     painter =
@@ -76,7 +72,8 @@ fun CurrentForecast(periodGroup: PeriodGroup, locationString: String) {
                         ),
                     contentDescription =
                         "${periodGroup.weatherCondition.displayName} icon",
-                    contentScale = ContentScale.FillHeight,
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier.size(140.dp)
                 )
             }
         }
