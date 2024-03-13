@@ -2,6 +2,7 @@ package com.example.notanotherweatherapp.ui.compose.dailyforecast
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,6 +21,7 @@ fun DailyInfo(
 ) {
     LazyColumn(
         modifier = modifier
+            .fillMaxHeight(0.4F)
             .fillMaxWidth()
             .background(Color.Gray)
             .padding(start = 0.5.dp, end = 0.5.dp)
@@ -43,7 +45,6 @@ fun DailyInfo(
                         periodGroup = chunkedPeriods[selectedIndex].first(),
                         labelText = "Today",
                         modifier = Modifier
-                            .weight(1f)
                             .padding(end = 12.dp),
                     )
                 } else {

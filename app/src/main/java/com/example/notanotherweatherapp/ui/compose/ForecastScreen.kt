@@ -27,30 +27,33 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.notanotherweatherapp.PreferenceManager
 import com.example.notanotherweatherapp.R
 import com.example.notanotherweatherapp.model.Clothing
 import com.example.notanotherweatherapp.noRippleClickable
 import com.example.notanotherweatherapp.ui.ForecastScreenViewModel
 import com.example.notanotherweatherapp.ui.compose.currentforecast.CurrentForecast
 import com.example.notanotherweatherapp.ui.compose.currentforecast.CurrentForecastInfoBox
-import com.example.notanotherweatherapp.ui.compose.dailyforecast.DAILY_ROW_HEIGHT
 import com.example.notanotherweatherapp.ui.compose.dailyforecast.DailyForecastRow
+import com.example.notanotherweatherapp.ui.compose.hourlyforecast.HourlyForecast
+import com.example.notanotherweatherapp.ui.compose.hourlyforecast.HourlyForecastDivider
 import com.example.notanotherweatherapp.ui.compose.settings.SettingsMenu
 import com.google.android.gms.maps.model.LatLng
 
 @Composable
-fun ForecastScreen(currentLocation: LatLng?) {
+fun ForecastScreen(
+    currentLocation: LatLng?,
+) {
     val viewModel: ForecastScreenViewModel = viewModel()
+
     val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    val preferenceManager = remember { PreferenceManager(context) }
     val focusRequester = remember { FocusRequester() }
-
     var showSettings by remember { mutableStateOf(false) }
+    var dailyRowHeight by remember { mutableStateOf(0.dp) }
 
     // TODO - Use flow.
     if (currentLocation != null &&
@@ -124,17 +127,29 @@ fun ForecastScreen(currentLocation: LatLng?) {
                         .fillMaxSize()
                         .weight(0.33F)
                     ) {
-                        itemsIndexed(viewModel.hourlyGroups) { index, group ->
-                            if (index != 0) HourlyForecast(
+                        item {
+                            HourlyForecastDivider(
+                                text = "PREPARED",
+                                modifier = Modifier.padding(top = 4.dp)
+                            )
+                        }
+                        itemsIndexed(viewModel.plannedHourlyGroups.value) { index, group ->
+                            HourlyForecast(periodGroup = group, isFirst = index == 0)
+                        }
+                        item {
+                            HourlyForecastDivider(text = "LATER")
+                        }
+                        itemsIndexed(viewModel.laterHourlyGroups.value) { index, group ->
+                            HourlyForecast(
                                 periodGroup = group,
                                 modifier =
-                                    if (index == viewModel.hourlyGroups.lastIndex) {
-                                        Modifier.padding(bottom = 4.dp)
-                                    } else Modifier
+                                if (index == viewModel.laterHourlyGroups.value.lastIndex) {
+                                    Modifier.padding(bottom = 4.dp)
+                                } else Modifier
                             )
                         }
                         item {
-                            DailyRowSpacer()
+                            DailyRowSpacer(dailyRowHeight)
                         }
                     }
                 }
@@ -142,12 +157,21 @@ fun ForecastScreen(currentLocation: LatLng?) {
             DailyForecastRow(
                 dailyGroups = viewModel.dailyGroups,
                 modifier = Modifier.align(Alignment.BottomCenter)
-            )
+            ) { dailyRowHeight = it }
             if (showSettings) {
                 SettingsMenu(
-                    preferenceManager = preferenceManager,
+                    viewModel = viewModel,
                     modifier = Modifier.align(Alignment.TopEnd)
-                ) {
+                ) { shouldRefresh ->
+                    if (shouldRefresh) {
+                        currentLocation?.let {
+                            viewModel.refresh(
+                                it.latitude,
+                                it.longitude,
+                                context
+                            )
+                        }
+                    }
                     showSettings = false
                 }
             }
@@ -156,13 +180,13 @@ fun ForecastScreen(currentLocation: LatLng?) {
 }
 
 @Composable
-fun DailyRowSpacer() {
+fun DailyRowSpacer(height: Dp) {
     // Account for daily row, which overlaps this Composable so it can
     // scroll underneath.
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(DAILY_ROW_HEIGHT.dp)
+            .height(height)
             .background(Color.Transparent)
     )
 }

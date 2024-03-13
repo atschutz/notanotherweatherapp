@@ -25,13 +25,17 @@ import com.example.notanotherweatherapp.Preference
 import com.example.notanotherweatherapp.PreferenceManager
 import com.example.notanotherweatherapp.PreferenceType
 import com.example.notanotherweatherapp.R
+import com.example.notanotherweatherapp.model.ForecastRepository
+import com.example.notanotherweatherapp.model.ForecastWebService
 import com.example.notanotherweatherapp.noRippleClickable
+import com.example.notanotherweatherapp.ui.ForecastScreenViewModel
+import com.example.notanotherweatherapp.ui.ForecastScreenWorker
 
 @Composable
 fun SettingsMenu(
-    preferenceManager: PreferenceManager,
+    viewModel: ForecastScreenViewModel,
     modifier: Modifier = Modifier,
-    onBackClicked: () -> Unit
+    onBackClicked: (shouldRefresh: Boolean) -> Unit,
 ) {
     val preferenceMap = remember {
         mutableStateMapOf<String, String>()
@@ -58,7 +62,9 @@ fun SettingsMenu(
                 contentDescription = "Back button",
                 modifier = Modifier
                     .size(16.dp)
-                    .noRippleClickable { onBackClicked() }
+                    .noRippleClickable {
+                        onBackClicked(false)
+                    }
             )
 
             Icon(
@@ -68,9 +74,9 @@ fun SettingsMenu(
                     .size(16.dp)
                     .noRippleClickable {
                         preferenceMap.forEach {
-                            preferenceManager.savePreference(it.key, it.value)
+                            viewModel.preferenceManager.savePreference(it.key, it.value)
                         }
-                        onBackClicked()
+                        onBackClicked(true)
                     }
             )
         }
@@ -78,14 +84,14 @@ fun SettingsMenu(
             if (it.preferenceType == PreferenceType.INPUT) {
                 InputSettingsRow(
                     preference = it,
-                    preferenceManager = preferenceManager,
+                    preferenceManager = viewModel.preferenceManager,
                 ) { value ->
                     preferenceMap[it.key] = value
                 }
             } else {
                 ToggleSettingsRow(
                     preference = it,
-                    preferenceManager = preferenceManager,
+                    preferenceManager = viewModel.preferenceManager,
                     onPreferenceChanged = { key, value ->
                         preferenceMap[key] = value ?: ""
                     }
@@ -99,6 +105,10 @@ fun SettingsMenu(
 @Composable
 fun SettingsMenuPreview() {
     SettingsMenu(
-        preferenceManager = PreferenceManager(LocalContext.current)
+        viewModel = ForecastScreenViewModel(
+            ForecastRepository(ForecastWebService()),
+            ForecastScreenWorker(),
+            PreferenceManager(LocalContext.current)
+        )
     ) { }
 }

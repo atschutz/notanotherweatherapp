@@ -17,7 +17,10 @@ import com.example.notanotherweatherapp.model.Clothing
 import com.example.notanotherweatherapp.model.ClothingChange
 
 @Composable
-fun ClothingChangeLine(clothingChange: ClothingChange) {
+fun ClothingChangeLine(
+    clothingChange: ClothingChange,
+    isFirst: Boolean,
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -30,7 +33,7 @@ fun ClothingChangeLine(clothingChange: ClothingChange) {
                 .size(24.dp)
         )
         Text(
-            text = "${clothingChange.time}:",
+            text = if (isFirst) "Now:" else "${clothingChange.time}:",
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
@@ -53,5 +56,6 @@ fun ClothingLineChangePreview() {
             time = "8pm",
             temperature = 76,
         ),
+        isFirst = false,
     )
 }

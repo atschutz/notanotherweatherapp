@@ -2,7 +2,6 @@ package com.example.notanotherweatherapp.ui
 
 import android.content.Context
 import android.location.Geocoder
-import android.util.Log
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,22 +19,26 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Locale
 import javax.inject.Inject
+import kotlin.math.max
 
 @HiltViewModel
 class ForecastScreenViewModel @Inject constructor(
     private val repository: ForecastRepository,
     private val worker: ForecastScreenWorker,
-    private val preferenceManager: PreferenceManager,
+    val preferenceManager: PreferenceManager,
 ) : ViewModel() {
     var dailyGroups: List<PeriodGroup> by mutableStateOf(listOf())
     var hourlyGroups: List<PeriodGroup> by mutableStateOf(listOf())
+    // TODO - Don't have to do this work twice.
     val plannedHourlyGroups = derivedStateOf {
         hourlyGroups.take(preferenceManager.getPreference(Preference.DISPLAY_HOURS).toInt())
     }
     val laterHourlyGroups = derivedStateOf {
+        val groupDifference =
+            hourlyGroups.size - preferenceManager.getPreference(Preference.DISPLAY_HOURS).toInt()
+
         hourlyGroups.takeLast(
-            hourlyGroups.size - preferenceManager.getPreference(Preference.DISPLAY_HOURS)
-                .toInt()
+            max(groupDifference, 0)
         )
     }
 
@@ -59,9 +62,8 @@ class ForecastScreenViewModel @Inject constructor(
                         ?.take(HOURLY_ITEM_LIMIT) ?: listOf()
                 )
 
-                clothingChanges = worker.getHourlyClothingChanges(hourlyGroups)
-                accessoryChanges = worker.getAccessoryChanges(hourlyGroups)
-                Log.d("-as-", "$hourlyGroups")
+                clothingChanges = worker.getHourlyClothingChanges(plannedHourlyGroups.value)
+                accessoryChanges = worker.getAccessoryChanges(plannedHourlyGroups.value)
             }
 
             launch {
@@ -95,6 +97,6 @@ class ForecastScreenViewModel @Inject constructor(
     }
 
     companion object {
-        const val HOURLY_ITEM_LIMIT = 24
+        const val HOURLY_ITEM_LIMIT = 48
     }
 }

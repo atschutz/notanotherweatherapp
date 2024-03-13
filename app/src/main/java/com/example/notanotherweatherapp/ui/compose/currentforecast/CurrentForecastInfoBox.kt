@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -23,7 +24,6 @@ import com.example.notanotherweatherapp.TEST_CLOTHING_CHANGES
 import com.example.notanotherweatherapp.TEST_PERIOD
 import com.example.notanotherweatherapp.model.ClothingChange
 import com.example.notanotherweatherapp.model.Period
-import com.example.notanotherweatherapp.ui.compose.DailyRowSpacer
 import java.time.LocalDate
 import kotlin.math.roundToInt
 
@@ -54,8 +54,11 @@ fun CurrentForecastInfoBox(
                     modifier = modifier.padding(8.dp)
                 )
             }
-            items(clothingChanges) {
-                ClothingChangeLine(clothingChange = it)
+            itemsIndexed(clothingChanges) { index, item ->
+                ClothingChangeLine(
+                    clothingChange = item,
+                    isFirst = index == 0,
+                )
             }
             if (accessoryChanges.isNotEmpty()) {
                 item {
@@ -68,7 +71,10 @@ fun CurrentForecastInfoBox(
                     )
                 }
                 items(accessoryChanges) {
-                    ClothingChangeLine(clothingChange = it)
+                    ClothingChangeLine(
+                        clothingChange = it,
+                        isFirst = false,
+                    )
                 }
             }
             item {
@@ -82,7 +88,7 @@ fun CurrentForecastInfoBox(
                     )
                     CurrentForecastInfoItem(
                         title = "PRECIPITATION",
-                        headline = period.probabilityOfPrecipitation?.value?.roundToInt().toString(),
+                        headline = period.probabilityOfPrecipitation.value.roundToInt().toString(),
                         body = "PERCENT",
                         modifier = Modifier.weight(1F)
                     )
@@ -92,7 +98,7 @@ fun CurrentForecastInfoBox(
                 Row {
                     CurrentForecastInfoItem(
                         title = "WIND SPEED",
-                        headline = period.windSpeed?.filter { it.isDigit() },
+                        headline = period.windSpeed.filter { it.isDigit() },
                         body = "MPH",
                         modifier = Modifier.weight(1F),
                     )
@@ -109,7 +115,7 @@ fun CurrentForecastInfoBox(
                 Row {
                     CurrentForecastInfoItem(
                         title = "HUMIDITY",
-                        headline = period.relativeHumidity?.value?.toInt().toString(),
+                        headline = period.relativeHumidity.value.toInt().toString(),
                         body = "PERCENT",
                         modifier = Modifier.weight(1F)
                     )
@@ -120,9 +126,6 @@ fun CurrentForecastInfoBox(
                         modifier = Modifier.weight(1F)
                     )
                 }
-            }
-            item {
-                DailyRowSpacer()
             }
         }
     }
