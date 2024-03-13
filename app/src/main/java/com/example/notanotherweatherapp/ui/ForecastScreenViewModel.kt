@@ -9,6 +9,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.notanotherweatherapp.Preference
+import com.example.notanotherweatherapp.PreferenceManager
 import com.example.notanotherweatherapp.model.Clothing
 import com.example.notanotherweatherapp.model.ClothingChange
 import com.example.notanotherweatherapp.model.ForecastRepository
@@ -23,9 +25,19 @@ import javax.inject.Inject
 class ForecastScreenViewModel @Inject constructor(
     private val repository: ForecastRepository,
     private val worker: ForecastScreenWorker,
+    private val preferenceManager: PreferenceManager,
 ) : ViewModel() {
     var dailyGroups: List<PeriodGroup> by mutableStateOf(listOf())
     var hourlyGroups: List<PeriodGroup> by mutableStateOf(listOf())
+    val plannedHourlyGroups = derivedStateOf {
+        hourlyGroups.take(preferenceManager.getPreference(Preference.DISPLAY_HOURS).toInt())
+    }
+    val laterHourlyGroups = derivedStateOf {
+        hourlyGroups.takeLast(
+            hourlyGroups.size - preferenceManager.getPreference(Preference.DISPLAY_HOURS)
+                .toInt()
+        )
+    }
 
     var cityString by mutableStateOf("")
 

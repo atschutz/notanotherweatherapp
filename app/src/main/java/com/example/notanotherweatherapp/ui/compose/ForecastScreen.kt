@@ -21,8 +21,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -42,8 +45,11 @@ import com.google.android.gms.maps.model.LatLng
 fun ForecastScreen(currentLocation: LatLng?) {
     val viewModel: ForecastScreenViewModel = viewModel()
     val context = LocalContext.current
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     val preferenceManager = remember { PreferenceManager(context) }
+    val focusRequester = remember { FocusRequester() }
+
     var showSettings by remember { mutableStateOf(false) }
 
     // TODO - Use flow.
@@ -73,13 +79,14 @@ fun ForecastScreen(currentLocation: LatLng?) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .focusRequester(focusRequester)
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_settings),
                 contentDescription = "Settings icon",
                 tint = Color.Gray,
                 modifier = Modifier
-                    .padding(end = 8.dp, top = 4.dp)
+                    .padding(end = 4.dp, top = 2.dp)
                     .size(16.dp)
                     .align(Alignment.TopEnd)
                     .noRippleClickable { showSettings = true }
