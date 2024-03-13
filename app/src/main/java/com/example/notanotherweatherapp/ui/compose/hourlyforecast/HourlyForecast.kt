@@ -29,7 +29,11 @@ import com.example.notanotherweatherapp.getTimeFromDateString
 import com.example.notanotherweatherapp.model.PeriodGroup
 
 @Composable
-fun HourlyForecast(periodGroup: PeriodGroup?, modifier: Modifier = Modifier) {
+fun HourlyForecast(
+    periodGroup: PeriodGroup?,
+    modifier: Modifier = Modifier,
+    isFirst: Boolean = false,
+) {
     Card(
         shape = RoundedCornerShape(topStart = 100.dp, bottomStart = 100.dp),
         colors = CardDefaults.cardColors(containerColor = Color.LightGray),
@@ -56,7 +60,8 @@ fun HourlyForecast(periodGroup: PeriodGroup?, modifier: Modifier = Modifier) {
                     .padding(4.dp)
             )
             Row(
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(end = 4.dp)
             ) {
                 Column(
                     verticalArrangement = Arrangement.Center,
@@ -67,7 +72,9 @@ fun HourlyForecast(periodGroup: PeriodGroup?, modifier: Modifier = Modifier) {
                         .padding(end = 4.dp)
                 ) {
                     Text(
-                        text = getTimeFromDateString(periodGroup?.period?.startTime ?: ""),
+                        text =
+                            if (isFirst) "Now"
+                            else getTimeFromDateString(periodGroup?.period?.startTime ?: ""),
                         textAlign = TextAlign.End,
                         fontWeight = FontWeight.SemiBold,
                         style = MaterialTheme.typography.labelMedium,
