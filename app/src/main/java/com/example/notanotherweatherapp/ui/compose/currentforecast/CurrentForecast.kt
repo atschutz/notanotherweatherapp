@@ -29,12 +29,17 @@ import com.example.notanotherweatherapp.model.PeriodGroup
 @Composable
 fun CurrentForecast(periodGroup: PeriodGroup, locationString: String) {
     Card(
-        shape = RoundedCornerShape(topStart = 0.dp, bottomStart = 0.dp, topEnd = 100.dp, bottomEnd = 100.dp),
+        shape = RoundedCornerShape(
+            topStart = 0.dp,
+            bottomStart = 0.dp,
+            topEnd = 100.dp,
+            bottomEnd = 100.dp
+        ),
         colors = CardDefaults.cardColors(containerColor = Color.LightGray),
         elevation = CardDefaults.cardElevation(4.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(end = 4.dp)
+            .padding(end = 8.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

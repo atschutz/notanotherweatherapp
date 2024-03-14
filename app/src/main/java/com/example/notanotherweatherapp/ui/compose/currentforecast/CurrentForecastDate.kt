@@ -40,7 +40,7 @@ fun CurrentForecastDate(
             modifier = Modifier
                 .height(1.dp)
                 .weight(1F)
-                .padding(start = 4.dp, end = 4.dp)
+                .padding(start = 4.dp)
                 .background(Color.DarkGray)
         )
     }

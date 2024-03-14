@@ -98,10 +98,42 @@ fun ForecastScreen(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
-                CurrentForecast(
-                    periodGroup = viewModel.hourlyGroups.first(),
-                    locationString = viewModel.cityString,
-                )
+                Box(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    CurrentForecast(
+                        periodGroup = viewModel.hourlyGroups.first(),
+                        locationString = viewModel.cityString,
+                    )
+                    Icon(
+                        painter = painterResource(R.drawable.ic_settings),
+                        contentDescription = "Settings icon",
+                        tint = Color.Gray,
+                        modifier = Modifier
+                            .padding(end = 4.dp, top = 2.dp)
+                            .size(16.dp)
+                            .align(Alignment.TopEnd)
+                            .noRippleClickable { showSettings = true }
+                    )
+                    Icon(
+                        painter = painterResource(R.drawable.ic_refresh),
+                        contentDescription = "Refresh icon",
+                        tint = Color.Gray,
+                        modifier = Modifier
+                            .padding(end = 4.dp, top = 2.dp)
+                            .size(16.dp)
+                            .align(Alignment.BottomEnd)
+                            .noRippleClickable {
+                                currentLocation?.let {
+                                    viewModel.refresh(
+                                        it.latitude,
+                                        it.longitude,
+                                        context,
+                                    )
+                                }
+                            }
+                    )
+                }
                 ClothingRow(
                     clothing = Clothing.entries,
                     activeClothing = viewModel.activeClothing.value,
@@ -119,6 +151,7 @@ fun ForecastScreen(
                                 period = it,
                                 clothingChanges = viewModel.clothingChanges,
                                 accessoryChanges = viewModel.accessoryChanges,
+                                bottomOffset = dailyRowHeight,
                                 modifier = Modifier.weight(1F)
                             )
                         }
